@@ -138,7 +138,7 @@ columns = 3     # Number of columns in the grid (can be 3, 4, 5, etc.)
 postsToShow = 6 # Number of posts to display in the grid
 
 [params.forms.newsletter]
-action = "https://app.kit.com/forms/7961988/subscriptions"
+action = "https://olegpustovit.substack.com/api/v1/free?nojs=true"
 formId = "7961988"
 uid = "842da55da6"
 format = "inline"
