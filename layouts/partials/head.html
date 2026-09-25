@@ -13,7 +13,7 @@
     {{ default .Site.Title .Site.Params.Title }}
   {{ end }}
 </title>
-<link rel="canonical" href="{{ if .Params.canonical_url }}{{ .Params.canonical_url }}{{ else }}{{ .Permalink }}{{ end }}" />
+<link rel="canonical" href="{{ .Permalink }}" />
 {{ with .Site.Params.MetaDescription }}
 <meta name="description" content="{{ . }}" />
 {{ end }} {{ with .Site.Author }}
