@@ -53,3 +53,11 @@ formId = "7961988"
 uid = "842da55da6"
 format = "inline"
 version = "5"
+
+# Microblog notes exported from Poster are not part of the sheet.
+[[cascade]]
+  [cascade.build]
+    render = 'never'
+    list = 'never'
+  [cascade._target]
+    path = '{/status,/status/**}'

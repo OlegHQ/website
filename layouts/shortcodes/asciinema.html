@@ -1,2 +1,3 @@
-{{- /* Inline recording: {{< asciinema src="foo.cast" label="…" loop="true" poster="npt:0:02" >}} */ -}}
-{{- partial "sheet/rec.html" (dict "page" .Page "src" (.Get "src") "label" (.Get "label") "autoPlay" (.Get "autoPlay") "loop" (.Get "loop") "poster" (.Get "poster") "speed" (.Get "speed") "idle" (.Get "idleTimeLimit")) -}}
+{{- /* Inline recording: {{< asciinema src="foo.cast" label="…" commands="cmd one|cmd two" loop="true" >}} */ -}}
+{{- $cmds := slice }}{{ with .Get "commands" }}{{ $cmds = split . "|" }}{{ end -}}
+{{- partial "sheet/rec.html" (dict "page" .Page "src" (.Get "src") "label" (.Get "label") "commands" $cmds "autoPlay" (.Get "autoPlay") "loop" (.Get "loop") "poster" (.Get "poster") "speed" (.Get "speed") "idle" (.Get "idleTimeLimit")) -}}

@@ -1,4 +1,4 @@
 {{- /* Lead recording, configured in front matter under params.asciinema. */ -}}
 {{- with .Page.Params.asciinema -}}
-{{- partial "sheet/rec.html" (dict "page" $.Page "src" .src "label" .label "autoPlay" .autoPlay "loop" .loop "poster" .poster "speed" .speed "idle" .idleTimeLimit) -}}
+{{- partial "sheet/rec.html" (dict "page" $.Page "src" .src "label" .label "commands" .commands "autoPlay" .autoPlay "loop" .loop "poster" .poster "speed" .speed "idle" .idleTimeLimit) -}}
 {{- end -}}

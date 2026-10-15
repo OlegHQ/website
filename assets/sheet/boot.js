@@ -62,7 +62,7 @@ function leave(e) {
   if (/\.(xml|cast|svg|png|jpe?g|webp|gif|pdf|txt|zip)$/i.test(u.pathname)) return;
   if (u.pathname === location.pathname && u.search === location.search) {
     if (!u.hash) return;
-    var t = document.getElementById(decodeURIComponent(u.hash.slice(1)));
+    var t = u.hash === '#top' ? document.querySelector('[data-root]') : document.getElementById(decodeURIComponent(u.hash.slice(1)));
     if (!t) return;
     e.preventDefault();
     if (C.still() || window.innerHeight > 1600 || C._tr) { t.scrollIntoView(); history.pushState(null, '', u.hash); return; }
@@ -140,7 +140,7 @@ function clock(t) { t = Math.max(0, Math.floor(t || 0)); return Math.floor(t / 6
 function mountRec(fig) {
   if (fig.__p) return; fig.__p = 1;
   var host = fig.querySelector('.lines'), btn = fig.querySelector('.play'), tm = fig.querySelector('[data-rectime]');
-  var auto = fig.hasAttribute('data-autoplay') && !C.still();
+  var auto = false;
   player().then(function (AP2) {
     host.textContent = '';
     var opt = { fit: 'both', controls: false, autoPlay: auto, loop: fig.hasAttribute('data-loop'), preload: true, theme: 'sheet', terminalFontFamily: "'Pragmasevka', ui-monospace, monospace" };
@@ -171,13 +171,7 @@ H.playRec = function (e) {
     go();
   });
 };
-var recs = document.querySelectorAll('figure.rec[data-cast]');
-if (recs.length) {
-  if ('IntersectionObserver' in window) {
-    var ob = new IntersectionObserver(function (es) { es.forEach(function (en) { if (en.isIntersecting) { ob.unobserve(en.target); mountRec(en.target); } }); }, { rootMargin: '200px 0px' });
-    recs.forEach(function (r) { ob.observe(r); });
-  } else recs.forEach(mountRec);
-}
+/* As in the design, a recording shows its commands typed until play is pressed. */
 
 C.componentDidMount();
 })();

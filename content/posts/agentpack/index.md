@@ -6,7 +6,11 @@ params:
   author: Oleg Pustovit
   asciinema:
     src: agentpack.cast
-    label: agentpack terminal demo
+    label: agentpack staging a skill and launching Claude Code.
+    commands:
+      - agentpack init
+      - agentpack add github.com/anthropics/skills/skills/canvas-design
+      - agentpack claude
     autoPlay: true
     loop: true
     poster: npt:0:02
@@ -154,7 +158,7 @@ Adding more tools makes this even more challenging to support. I typically use a
 
 ### Modes: switching the agent’s working context
 
-{{< asciinema src="modes-tui.cast" label="agentpack mode TUI" poster="npt:0:02" loop="true" theme="catppuccin-latte" >}}
+{{< asciinema src="modes-tui.cast" label="Modes in Claude Code." commands="agentpack claude --mode default|agentpack claude --mode frontend" poster="npt:0:02" loop="true" theme="catppuccin-latte" >}}
 
 > In the demo above I disable the `skill-creator` package for the `frontend` mode. Claude Code launched with `--mode default` will list both skills, while `--mode frontend` will show only the canvas-design one.
 
