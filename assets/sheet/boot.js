@@ -142,7 +142,7 @@ function mountRec(fig) {
   var host = fig.querySelector('.lines'), btn = fig.querySelector('.play'), tm = fig.querySelector('[data-rectime]');
   var auto = false;
   player().then(function (AP2) {
-    host.textContent = '';
+    host.textContent = ''; fig.classList.add('is-live');
     var opt = { fit: 'both', controls: false, autoPlay: auto, loop: fig.hasAttribute('data-loop'), preload: true, theme: 'sheet', terminalFontFamily: "'Pragmasevka', ui-monospace, monospace" };
     /* Phones: keep the recording at a readable size and let it scroll sideways. */
     if (host.clientWidth < 600) { opt.fit = false; opt.terminalFontSize = '11px'; host.classList.add('is-native'); }
