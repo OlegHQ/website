@@ -11,7 +11,7 @@ H.subscribe = function (e) {
   var f = e && e.currentTarget && e.currentTarget.closest('[data-form]'); if (!f) return;
   var inp = f.querySelector('input'), msg = f.querySelector('[data-stmsg]'), lab = f.querySelector('[data-sublabel]'), v = (inp.value || '').trim();
   if (f.getAttribute('data-state') === 'sending') return;
-  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v)) { f.setAttribute('data-state', 'error'); msg.textContent = 'Enter a full email address, like you@domain.com.'; inp.focus(); return; }
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v)) { f.setAttribute('data-state', 'error'); msg.textContent = 'Enter a full email address, like you@domain.com.'; lab.textContent = 'Subscribe'; inp.focus(); return; }
   f.setAttribute('data-state', 'sending'); msg.textContent = 'Sending'; lab.textContent = 'Sending';
   var body = new URLSearchParams(); body.set('email', v); body.set('first_url', location.href); body.set('current_url', location.href);
   fetch(NEWSLETTER, { method: 'POST', mode: 'no-cors', body: body }).then(function () {
@@ -90,7 +90,7 @@ C.drawWipe = function (ts) {
   var tr = this._tr;
   if (tr && tr.hold && tr.phase === 'in') tr.start = ts + 1e9;
   drawWipe.call(this, ts);
-  if (document.documentElement.classList.contains('tr-in') && this._tr && this._tr.phase === 'in') document.documentElement.classList.remove('tr-in');
+  if (document.documentElement.classList.contains('tr-in') && (!this._tr || this._tr.phase === 'in')) document.documentElement.classList.remove('tr-in');
 };
 window.addEventListener('pageshow', function (e) {
   if (!e.persisted) return;
@@ -106,6 +106,25 @@ window.addEventListener('pageshow', function (e) {
     C._tr = { phase: 'in', start: performance.now() + 60, kind: p.kind, seed: p.seed, ox: p.ox, oy: p.oy, el: { scrollIntoView: function () {} } };
   } catch (err) { document.documentElement.classList.remove('tr-in'); }
 })();
+
+/* Map of the piece: the design's bindMap, with the map's box measured once per
+   drag. Scrolling moves an unstuck map under the pointer; re-measuring on every
+   move fed the scroll back into the position and ran away. */
+C.bindMap = function (cv) {
+  if (cv.__b) return; cv.__b = 1;
+  var self = this, drag = false, box = null;
+  var at = function (e) { var r = box || cv.getBoundingClientRect(), h = cv.hasAttribute('data-horiz'); return Math.max(0, Math.min(1, h ? (e.clientX - r.left) / r.width : (e.clientY - r.top) / r.height)); };
+  var jump = function (fr) {
+    var art = self._els && self._els.art, mb = self._mb; if (!art || !mb) return;
+    var d = art.getBoundingClientRect().top + fr * mb.H - window.innerHeight / 2;
+    window.scrollBy(0, d);
+  };
+  cv.addEventListener('pointerdown', function (e) { drag = true; box = cv.getBoundingClientRect(); try { cv.setPointerCapture(e.pointerId); } catch (err) {} cv.__hov = at(e); jump(cv.__hov); });
+  cv.addEventListener('pointermove', function (e) { cv.__hov = at(e); if (drag) jump(cv.__hov); });
+  var end = function () { drag = false; box = null; };
+  cv.addEventListener('pointerup', end); cv.addEventListener('pointercancel', end);
+  cv.addEventListener('pointerleave', function () { if (!drag) cv.__hov = null; });
+};
 
 /* Terminal recordings: the design's recording frame hosts asciinema-player. */
 var AP = null;
