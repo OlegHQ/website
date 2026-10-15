@@ -7,7 +7,7 @@
 <nav aria-label="Sections" style="display: flex; gap: 30px">
 <a class="navb{{ if eq $cur "projects" }} on{{ end }}" href="/#projects" style="text-decoration: none"><i aria-hidden="true"></i><span>Projects</span><span class="n">06</span></a>
 <a class="navb{{ if eq $cur "experiments" }} on{{ end }}" href="/#experiments" style="text-decoration: none"><i aria-hidden="true"></i><span>Experiments</span><span class="n">03</span></a>
-<a class="navb{{ if eq $cur "writings" }} on{{ end }}" href="/#writings" style="text-decoration: none"><i aria-hidden="true"></i><span>Writings</span><span class="n">{{ $nw }}</span></a>
+<a class="navb{{ if eq $cur "writings" }} on{{ end }}"{{ if eq $cur "writings" }} data-nav="writings"{{ end }} href="/#writings" style="text-decoration: none"><i aria-hidden="true"></i><span>Writings</span><span class="n">{{ $nw }}</span></a>
 <a class="navb" href="{{ if $.contact }}#contact{{ else }}/#contact{{ end }}" style="text-decoration: none"><i aria-hidden="true"></i><span>Contact</span></a>
 </nav>
 <div class="hud" aria-hidden="true" style="margin-left: auto; display: flex; align-items: baseline; gap: 18px; font-size: 11px; font-variant-numeric: tabular-nums"><span data-tc>00:00:00:00</span><span class="b"><span data-pct>000</span> %</span></div>
