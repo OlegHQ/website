@@ -1,12 +1,12 @@
 <svg viewBox="0 0 600 272" xmlns="http://www.w3.org/2000/svg" font-family="ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace">
   <rect width="600" height="272" fill="#eff1f5"/>
 
-  <text x="10" y="15" font-size="7" fill="#57606a">&gt; HOOKS AS INTERMEDIATE REPRESENTATION</text>
+  <text x="10" y="15" font-size="7" fill="#57606a">Hooks as intermediate representation</text>
 
   <!-- column headers -->
-  <text x="12" y="38" font-size="7" fill="#57606a">1. SOURCE MODEL</text>
-  <text x="168" y="38" font-size="7" fill="#57606a">2. NORMALIZE</text>
-  <text x="340" y="38" font-size="7" fill="#57606a">3. RENDER PER HARNESS</text>
+  <text x="12" y="38" font-size="7" fill="#57606a">1. Source model</text>
+  <text x="168" y="38" font-size="7" fill="#57606a">2. Normalize</text>
+  <text x="340" y="38" font-size="7" fill="#57606a">3. Render per harness</text>
 
   <!-- connectors (behind all boxes) -->
   <line x1="152" y1="95" x2="168" y2="95" stroke="#2b2b2b" stroke-width="1.2"/>
@@ -47,7 +47,7 @@
   <text x="182" y="125" font-size="6" fill="#fff">support: native | emulated | skip</text>
 
   <!-- 2. NORMALIZE — bridge -->
-  <text x="242" y="156" text-anchor="middle" font-size="7" fill="#57606a">BRIDGE RUNTIME</text>
+  <text x="242" y="156" text-anchor="middle" font-size="7" fill="#57606a">Bridge runtime</text>
   <rect x="168" y="160" width="148" height="52" fill="#f97316" stroke="#f97316" stroke-width="1.2"/>
   <text x="242" y="178" text-anchor="middle" font-size="8" fill="#fff" font-weight="600">agentpack hook-exec</text>
   <text x="242" y="192" text-anchor="middle" font-size="7" fill="#fff">dispatch / command / http</text>

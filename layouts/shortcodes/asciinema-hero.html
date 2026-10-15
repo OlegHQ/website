@@ -1,5 +1,4 @@
-{{- /* Hero recording, driven by the page's front-matter params.asciinema */ -}}
+{{- /* Lead recording, configured in front matter under params.asciinema. */ -}}
 {{- with .Page.Params.asciinema -}}
-  {{- $opts := merge . (dict "page" $.Page "idprefix" "asciinema") -}}
-  {{- partial "asciinema-hero.html" $opts -}}
+{{- partial "sheet/rec.html" (dict "page" $.Page "src" .src "label" .label "autoPlay" .autoPlay "loop" .loop "poster" .poster "speed" .speed "idle" .idleTimeLimit) -}}
 {{- end -}}

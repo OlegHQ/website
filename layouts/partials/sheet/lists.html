@@ -1,0 +1,10 @@
+{{- /* Lists in the design's form: ul gets the dash rule, ol gets numbered steps. */ -}}
+{{- $c := . -}}
+{{- $c = replace $c "<ul>" `<ul class="dl">` -}}
+{{- range findRE `(?s)<ol(?: start="\d+")?>.*?</ol>` $c -}}
+{{- $n := replaceRE `^<ol[^>]*>` `<ol class="steps">` . -}}
+{{- $n = replace $n "<li>" `<li><span class="sn" aria-hidden="true"></span><div>` -}}
+{{- $n = replace $n "</li>" "</div></li>" -}}
+{{- $c = replace $c . $n 1 -}}
+{{- end -}}
+{{- return $c -}}

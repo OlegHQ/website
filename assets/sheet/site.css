@@ -1,0 +1,26 @@
+/* Additions for the live site. Everything else in sheet.css comes from the design canvas. */
+html.tr-in canvas[data-wipe]{background:#1c1c1c;animation:trsafe 0s 2.5s forwards}
+@keyframes trsafe{to{background:transparent}}
+.post blockquote{margin:0;padding:0}
+.ph4{font-size:17px;line-height:1.3;letter-spacing:-.01em;font-weight:700;margin:28px 0 14px;max-width:660px}
+.post hr{border:0;border-top:1px solid #1c1c1c;margin:34px 0;max-width:660px}
+.steps{counter-reset:sn}
+.steps>li>.sn::before{counter-increment:sn;content:counter(sn,decimal-leading-zero)}
+.steps>li>div>p{margin:0 0 8px}
+.steps>li>div>p:last-child,.dl li>p:last-child{margin-bottom:0}
+.dl li>p{margin:0 0 8px}
+.dl .dl,.steps .dl{margin:8px 0 0}
+.post li code,.post td code{word-break:break-word}
+.fig img{display:block}
+.post .fig figcaption .b{font-variant-numeric:tabular-nums}
+.rec .scr{display:flex;flex-direction:column}
+.rec .lines{position:relative;flex:1 1 auto;min-height:0;box-sizing:border-box}
+.rec .lines div.ap-wrapper{height:100%;justify-content:flex-start;align-items:flex-start;background:none}
+.rec .lines div.ap-wrapper div.ap-player{border-radius:0;background:none}
+.rec .lines div.ap-term{border-width:0}
+/* Casts carry their own colours inline; the sheet keeps the terminal in greys. */
+.rec .lines .ap-term{filter:grayscale(1) brightness(1.15)}
+.rec .ap-player .ap-overlay-start,.rec .ap-player .ap-overlay-start .ap-play-button,.rec .ap-player .ap-overlay-loading{display:none}
+.rec .play{z-index:2}
+.rec.is-playing .play span{width:14px;height:16px;border:0;border-left:4px solid #f4f3ee;border-right:4px solid #f4f3ee;box-sizing:border-box;margin:0}
+.rec .lines .ap-player.asciinema-player-theme-sheet{--term-color-foreground:#e9e8e3;--term-color-background:#1c1c1c;--term-color-0:#1c1c1c;--term-color-1:#f26522;--term-color-2:#e9e8e3;--term-color-3:#f26522;--term-color-4:#b3b2ac;--term-color-5:#f26522;--term-color-6:#b3b2ac;--term-color-7:#e9e8e3;--term-color-8:#6b6a66;--term-color-9:#f26522;--term-color-10:#f4f3ee;--term-color-11:#f26522;--term-color-12:#d6d5cf;--term-color-13:#f26522;--term-color-14:#d6d5cf;--term-color-15:#f4f3ee}

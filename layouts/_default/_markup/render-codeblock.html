@@ -1,38 +1,24 @@
-{{- $label := print .Type " code snippet" -}}
-<figure class="relative my-8 border border-gray-200 overflow-hidden" role="figure" aria-label="{{- $label | plainify -}}">
-  <div class="flex items-center justify-between px-3 py-1.5 bg-gray-100 border-b border-gray-200 select-none">
-    {{- with .Attributes.title -}}
-    <div class="text-xs font-semibold uppercase tracking-wider text-gray-500">{{ . }}</div>
-    {{- else -}}
-    <div class="text-xs font-semibold uppercase tracking-wider text-gray-500">{{ .Type }}</div>
-    {{- end -}}
-    <div class="code-copy relative">
-      <div class="code-copied absolute right-0 top-8 min-w-[132px] bg-black text-white text-xs px-2 py-1 opacity-0 transition-opacity duration-300 pointer-events-none">Copied to clipboard</div>
-      <button class="cursor-pointer hover:text-gray-400 flex items-center justify-center w-6 h-6 text-gray-600 hover:text-black transition-colors focus:outline-none">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.5"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="feather"
-        >
-          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-          <path
-            d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
-          ></path>
-        </svg>
-      </button>
-      <textarea class="hidden">{{ .Inner }}</textarea>
-    </div>
-  </div>
-  <div class="overflow-x-auto">
-    {{- with transform.HighlightCodeBlock . -}} 
-    {{ .Wrapped }}
-    {{- end -}}
-  </div>
-</figure>
+{{- /* Code figure from the design: language as typed, Copy chip, one .cl line per source line for the stepped reveal. */ -}}
+{{- $lang := .Type | default "text" -}}
+{{- $l := lower $lang -}}
+{{- $cm := "#" -}}
+{{- if in (slice "go" "golang" "js" "javascript" "mjs" "ts" "typescript" "jsx" "tsx" "swift" "rust" "rs" "c" "cpp" "c++" "h" "java" "kotlin" "kt" "scala" "dart" "zig" "groovy" "jsonc" "proto" "protobuf" "csharp" "cs" "objc") $l -}}{{ $cm = "//" }}{{ end -}}
+{{- if in (slice "css" "scss" "sass" "less" "html" "xml" "svg" "json" "md" "markdown" "diff" "patch") $l -}}{{ $cm = "" }}{{ end -}}
+{{- $re := "" -}}
+{{- if eq $cm "#" }}{{ $re = `^((?:.*?\s)?)(#.*)$` }}{{ else if eq $cm "//" }}{{ $re = `^((?:.*?[\s;,(){}])?)(//.*)$` }}{{ end -}}
+{{- $src := strings.TrimRight "\n" .Inner -}}
+<figure class="code io"><figcaption><span><i aria-hidden="true"></i><span class="lang">{{ $lang }}</span></span><button type="button" class="chip" data-on="copyCode">Copy</button></figcaption><pre>
+{{- range $k, $ln := split $src "\n" -}}
+<span class="cl" style="--i: {{ cond (gt $k 30) 30 $k }}">
+{{- $m := slice -}}
+{{- if $re }}{{ $m = findRESubmatch $re $ln 1 }}{{ end -}}
+{{- if and (in (slice "toml" "ini" "cfg") $l) (hasPrefix $ln "[") -}}
+<span class="kw">{{ $ln }}</span>
+{{- else if $m -}}
+{{ index (index $m 0) 1 }}<span class="cm">{{ index (index $m 0) 2 }}</span>
+{{- else -}}
+{{ $ln }}
+{{- end -}}
+</span>
+{{- end -}}
+</pre></figure>

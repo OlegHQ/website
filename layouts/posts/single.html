@@ -1,118 +1,89 @@
 {{ define "main" }}
-<section class="w-full max-w-[1078px] mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-32">
-  <article class="markdown post mt-16" itemscope itemtype="http://schema.org/BlogPosting">
-    <!-- Post Header -->
-    <header class="mb-6 border-b border-primary/10 pb-4">
-      <h1 class="text-4xl lg:text-5xl font-bold text-primary mb-8" itemprop="name headline">
-        {{ .Title }}
-      </h1>
-      <div class="flex flex-wrap items-center gap-6 text-primary/70">
-        <!-- Author -->
-        {{ if (or (isset .Site "author") (isset .Site "title"))}}
-        <div class="flex items-center" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <span itemprop="name">
-            {{ if isset .Site "author" }}
-              {{ .Site.Author }}
-            {{ else if isset .Site "title" }}
-              {{ .Site.Title }}
-            {{ end }}
-          </span>
-        </div>
-        {{ end }}
-        
-        <!-- Date -->
-        <div class="flex items-center">
-          {{ $dataFormat := .Site.Params.dateFormat | default "January 2, 2006" }}
-          <time datetime="{{ .Date }}" itemprop="datePublished">{{ .Date.Format $dataFormat }}</time>
-          {{ if (and .Site.Params.show_updated (ne .Lastmod .Date)) }}
-            <span class="mx-2">•</span>
-            <span>Updated: <time datetime="{{ .Lastmod }}" itemprop="dateModified">{{ .Lastmod.Format $dataFormat }}</time></span>
-          {{ end }}
-          {{if .Params.author}}
-          <span class="mx-2">•</span>
-          <span>{{.Params.author}}</span>
-          {{ end }}
-        </div>
-      </div>
-    </header>
+{{- $all := (where site.RegularPages "Section" "posts").ByDate -}}
+{{- $total := len $all -}}
+{{- $idx := 0 -}}{{ range $i, $p := $all }}{{ if eq $p $ }}{{ $idx = $i }}{{ end }}{{ end -}}
+{{- $no := printf "%02d" (add $idx 1) -}}
+{{- $older := false -}}{{ if gt $idx 0 }}{{ $older = index $all (sub $idx 1) }}{{ end -}}
+{{- $newer := false -}}{{ if lt (add $idx 1) $total }}{{ $newer = index $all (add $idx 1) }}{{ end -}}
+{{- $mins := math.Max 1 (math.Round (div (float .WordCount) 230)) -}}
 
-    <!-- Table of Contents -->
-    {{ if .Site.Params.tocInline }}
-    <div class="prose mx-auto mb-16 p-6 rounded-lg bg-primary/5">
-      <h2 class="text-xl font-bold text-primary mb-4">Table of Contents</h2>
-      {{ .TableOfContents }}
-    </div>
-    {{ end }}
-    
-    <!-- Post Content -->
-    <div class="prose prose-lg max-w-none text-primary/90" itemprop="articleBody">
-      {{ .Content }}
-    </div>
-    
-    <!-- Tags Section -->
-    {{ if gt .Params.tags 0 }}
-    <div class="mt-12 mb-8">
-      <div class="flex flex-wrap gap-2 opacity-70">
-        {{ range $index, $value := .Params.tags }}
-        <a href="{{ "/tags/" | relLangURL }}{{ $value | urlize }}" class="text-orange hover:text-orange-600 transition-colors text-sm">
-          #{{ $value }}
-        </a>
-        {{ end }}
-      </div>
-    </div>
-    {{ end }}
+{{- $B := partial "sheet/body.html" . -}}{{ $lede := $B.lede }}{{ $intro := $B.intro }}{{ $secs := $B.secs -}}
 
-  {{ partial "form-mini.html" . }}
+<div class="sheet" data-root data-home="writings" style="position: relative; background: #e9e8e3; overflow-x: clip">
+{{ partial "sheet/topbar.html" (dict "cur" "writings" "no" "3" "contact" true) }}
 
-    
-    <!-- Post Footer -->
-    <div class="mt-16 pt-8 border-primary/10">
-      <div class="grid grid-cols-3 gap-8">
-        <!-- Previous Post -->
-        <div class="col-span-1">
-          {{ with .PrevInSection }}
-          <span class="block text-sm text-primary/60 mb-2">Previous</span>
-          <a href="{{ .Permalink }}" class="text-lg font-medium text-primary hover:text-primary/80 transition-colors">
-            {{ .Title }}
-          </a>
-          {{ end }}
-        </div>
-        
-        <!-- Vertical Separator -->
-        <div class="col-span-1 flex justify-center">
-          <div class="h-full w-px bg-primary/10"></div>
-        </div>
-        
-        <!-- Next Post -->
-        <div class="col-span-1 text-right">
-          {{ with .NextInSection }}
-          <span class="block text-sm text-primary/60 mb-2">Next</span>
-          <a href="{{ .Permalink }}" class="text-lg font-medium text-primary hover:text-primary/80 transition-colors">
-            {{ .Title }}
-          </a>
-          {{ end }}
-        </div>
-      </div>
-    </div>
-  </article>
+<header class="io" style="max-width: 1360px; margin: 0 auto; box-sizing: border-box; padding: 52px clamp(16px, 3vw, 40px) 0">
+<div style="display: flex; flex-wrap: wrap; gap: 8px 40px; font-size: 11px; line-height: 14px; margin-bottom: 20px"><a class="b" href="/#writings" style="text-decoration: none">← Writings</a><span class="hud" data-scr>Piece {{ $no }} of {{ printf "%02d" $total }}</span><span class="n b" style="font-size: 11px"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006 01 02" }}</time></span><span>{{ $mins }} min read</span><span class="or b">{{ .Params.author | default site.Params.author }}</span></div>
+<div style="display: flex; flex-wrap: wrap; align-items: stretch; gap: 28px 0">
+<div class="panel wipe" style="flex: 0 1 420px; height: 300px; min-width: 280px">
+<span class="cn" aria-hidden="true" style="left: 110px; top: 22px; border-right: 0; border-bottom: 0"></span>
+<span class="cn" aria-hidden="true" style="right: 22px; bottom: 22px; border-left: 0; border-top: 0"></span>
+<span class="dash" aria-hidden="true"></span>
+<div style="position: absolute; left: 22px; top: 22px; bottom: 22px; display: flex; flex-direction: column; justify-content: space-between; font-size: 11px; font-weight: 700"><span>- 01</span><span>- 02</span><span>- 03</span><span>- 04</span></div>
+<div style="position: absolute; right: 30px; bottom: 16px; font-weight: 900; font-size: 230px; line-height: 0.72; letter-spacing: -0.05em">{{ partial "sheet/slice.html" (dict "text" $no "n" 5 "from" 90) }}</div>
+<span class="sweep" aria-hidden="true"></span>
+</div>
+<div class="ttl" style="flex: 1 1 420px; display: flex; flex-direction: column; justify-content: flex-end; gap: 22px; padding: 0 0 0 28px; border-bottom: 2px solid #1c1c1c">
+<h1 class="rise" style="margin: 0; font-size: clamp(34px, 3.9vw, 56px); line-height: 1.02; letter-spacing: -0.035em; font-weight: 800; max-width: 760px; animation-delay: .15s">{{ .Title }}</h1>
+{{- with .Params.tags }}
+<div class="tagl rise" style="margin-bottom: 16px; animation-delay: .25s">{{ range . }}<span>{{ . }}</span>{{ end }}</div>
+{{- else }}
+<div style="margin-bottom: 16px"></div>
+{{- end }}
+</div>
+</div>
+<div class="rise" style="display: flex; flex-wrap: wrap; gap: 20px 40px; padding: 44px 0 10px; animation-delay: .35s">
+<div style="flex: 0 0 220px" class="prail"><span class="sp b">Abstract</span></div>
+<p class="lede post" style="flex: 1 1 400px">{{ $lede | safeHTML }}</p>
+</div>
+</header>
+
+<div style="max-width: 1360px; margin: 0 auto; box-sizing: border-box; padding: 0 clamp(16px, 3vw, 40px); display: flex; gap: 40px; align-items: flex-start">
+<aside class="prail" style="position: sticky; top: 49px; flex: 0 0 220px; padding-top: 40px; display: flex; gap: 14px">
+<div style="position: relative; flex: 0 0 4px; align-self: stretch; background: #d6d5cf"><div data-fill style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; background: #f26522; transform-origin: top; transform: scaleY(0)"></div></div>
+<nav aria-label="Contents" style="display: flex; flex-direction: column"><span class="sp b" style="font-size: 11px; margin-bottom: 12px">Contents</span>
+{{- range $secs }}<a class="tick toc{{ if eq .lv "3" }} sub{{ end }}" data-tick="{{ .id }}" href="#{{ .id }}"><i></i><span class="tn">{{ .n }}</span><span class="tt">{{ .title | safeHTML }}</span></a>{{ end -}}
+</nav>
+</aside>
+
+<article class="post" style="flex: 1 1 auto; min-width: 0; padding-top: 12px">
+<div class="mstrip" aria-hidden="true"><div style="position: relative; height: 30px; box-shadow: 0 0 0 1px #1c1c1c"><canvas data-map data-horiz style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; display: block; touch-action: pan-y"></canvas></div><div style="display: flex; gap: 8px; align-items: baseline; padding-top: 7px; font-size: 12px"><span class="or b" data-mapn style="font-size: 11px">00</span><span class="b" data-mapsec style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">Introduction</span><span class="n" style="margin-left: auto; font-size: 11px"><span data-pct2>000</span> %</span></div></div>
+{{ $intro | safeHTML }}
+{{- range $secs }}
+<section id="{{ .id }}" data-sec="{{ .id }}" class="ps io">
+{{ .body | safeHTML }}
 </section>
+{{- end }}
+{{- with .Params.tags }}
+<div class="io" style="padding: 40px 0 20px"><div class="tagl">{{ range . }}<span>{{ . }}</span>{{ end }}</div></div>
+{{- end }}
+<nav class="pnav io" aria-label="More writing" style="margin: 30px 0 120px">
+{{- with $older }}
+<a href="{{ .RelPermalink }}"><span class="n b">← Previous · {{ .Date.Format "2006 01 02" }}</span><span class="tt">{{ .Title }}</span></a>
+{{- else }}{{ with $newer }}
+<a href="{{ .RelPermalink }}"><span class="n b">Next · {{ .Date.Format "2006 01 02" }}</span><span class="tt">{{ .Title }} <span class="go">→</span></span></a>
+{{- end }}{{ end }}
+<a href="/#writings" style="text-align: right; align-items: flex-end"><span class="n b">All writing · {{ printf "%02d" $total }}</span><span class="tt">Back to Writings <span class="go">→</span></span></a>
+</nav>
+</article>
 
-<!-- MathJax Support -->
-{{ $mathjax := false }}
-{{ if isset .Params "mathjax" }}
-  {{ $mathjax = .Params.mathjax }}
-{{ else if isset .Site.Params "mathjax" }}
-  {{ $mathjax = .Site.Params.mathjax }}
-{{ end }}
-{{ if $mathjax }}
-<script>
-  MathJax = {
-    tex: { inlineMath: [['$', '$'], ['\\(', '\\']] },
-    svg: { fontCache: 'global' }
-  };
-</script>
-<script type="text/javascript" id="MathJax-script" async
-  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
-</script>
-{{ end }}
+<aside class="spine" aria-hidden="true" style="position: sticky; top: 49px; flex: 0 0 264px; display: flex; flex-direction: column; gap: 8px; padding-top: 40px">
+<div style="display: flex; justify-content: space-between; font-size: 11px"><span class="b">Map of this piece</span><span class="n" style="font-size: 11px"><span data-pct2>000</span> %</span></div>
+<div style="position: relative; height: 540px; box-shadow: 0 0 0 1px #1c1c1c">
+<canvas data-map style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; display: block; cursor: pointer; touch-action: none"></canvas>
+</div>
+<div style="display: flex; gap: 10px; align-items: baseline; min-height: 34px; padding-top: 6px; font-size: 13px; line-height: 1.25"><span class="or b" data-mapn style="flex: 0 0 18px; font-size: 11px">00</span><span class="b" data-mapsec>Introduction</span></div>
+<div class="mkey"><span><i style="background: #f26522"></i>Heading</span><span><i></i>Read</span><span><i style="background: #b3b2ac"></i>Ahead</span><span><i class="fr"></i>Figure</span></div>
+<div style="font-size: 11px; color: #6b6a66">Click or drag the map to move through the piece.</div>
+</aside>
+</div>
+
+<div style="max-width: 1360px; margin: 0 auto; box-sizing: border-box; padding: 0 clamp(16px, 3vw, 40px)">
+<section id="contact" data-sec="contact" style="scroll-margin-top: 49px; padding-bottom: 120px">
+{{ partial "sheet/contact.html" . }}
+</section>
+{{ partial "sheet/footer.html" . }}
+</div>
+<canvas data-wipe aria-hidden="true" width="1" height="1" style="position: fixed; left: 0; top: 0; width: 100%; height: 100%; z-index: 50; pointer-events: none"></canvas>
+</div>
 {{ end }}

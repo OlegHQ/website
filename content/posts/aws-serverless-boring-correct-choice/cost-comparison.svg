@@ -1,7 +1,7 @@
 <svg viewBox="0 0 420 90" xmlns="http://www.w3.org/2000/svg" font-family="ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace">
   <rect width="420" height="90" fill="#fff"/>
 
-  <text x="12" y="20" font-size="8" fill="#57606a">&gt; MONTHLY COST</text>
+  <text x="12" y="20" font-size="8" fill="#57606a">Monthly cost</text>
 
   <!-- RDS bar -->
   <text x="12" y="45" font-size="9" fill="#2b2b2b">RDS db.t3.small</text>

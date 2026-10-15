@@ -1,0 +1,11 @@
+{{- $posts := (where site.RegularPages "Section" "posts").ByDate.Reverse -}}
+{{- $y0 := "" }}{{ $y1 := "" }}{{ with $posts }}{{ $y0 = (index (last 1 .) 0).Date.Format "2006" }}{{ $y1 = (index . 0).Date.Format "2006" }}{{ end -}}
+<div class="plate io" style="min-height: 0">
+<i class="tl" aria-hidden="true"></i><i class="tr" aria-hidden="true"></i><i class="bl" aria-hidden="true"></i><i class="br" aria-hidden="true"></i>
+<div class="rise" style="display: flex; align-items: baseline; gap: 34px; margin-left: 30%"><span class="sp b" data-scr>Writings</span><span class="n">{{ $y0 }}</span><span class="n b">{{ $y1 }}</span></div>
+<span class="bar grow" aria-hidden="true" style="height: 6px; width: 38%; margin: 14px 0 26px 30%; transform: none; animation-delay: .1s"></span>
+{{- range $i, $p := $posts }}
+<a class="row rise" href="{{ $p.RelPermalink }}" style="display: flex; align-items: baseline; gap: 6px 34px; flex-wrap: wrap; padding: 13px 0 0; {{ with index (slice "" "margin-left: 8%; " "margin-left: 16%; ") (mod $i 3) }}{{ . | safeCSS }}{{ end }}text-decoration: none; animation-delay: {{ printf "%.2f" (add 0.14 (mul (float $i) 0.06)) | strings.TrimPrefix "0" }}s"><span class="n b" style="flex: 0 0 96px">{{ $p.Date.Format "2006 01 02" }}</span><span style="flex: 1 1 320px; font-size: 15px">{{ $p.Title }} <span class="go" aria-hidden="true">→</span></span><span class="ln" aria-hidden="true" style="flex: 0 0 100%; height: 1px; margin-top: 12px"></span></a>
+{{- end }}
+<div class="rise" style="margin: 34px 0 0 30%; animation-delay: {{ printf "%.2f" (add 0.16 (mul (float (len $posts)) 0.06)) | strings.TrimPrefix "0" }}s">{{ $words := slice "No" "One" "Two" "Three" "Four" "Five" "Six" "Seven" "Eight" "Nine" "Ten" "Eleven" "Twelve" "Thirteen" "Fourteen" "Fifteen" "Sixteen" "Seventeen" "Eighteen" "Nineteen" "Twenty" }}{{ if lt (len $posts) 21 }}{{ index $words (len $posts) }}{{ else }}{{ len $posts }}{{ end }} piece{{ if ne (len $posts) 1 }}s{{ end }} so far.<br><span class="b">New ones arrive by RSS and by email.</span></div>
+</div>

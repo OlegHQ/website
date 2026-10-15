@@ -1,0 +1,13 @@
+<div style="position: sticky; top: 0; z-index: 20; background: #e9e8e3; border-bottom: 1px solid #1c1c1c">
+<div style="max-width: 1360px; margin: 0 auto; box-sizing: border-box; padding: 0 clamp(16px, 3vw, 40px); display: flex; align-items: center; gap: 44px; min-height: 44px">
+<button type="button" data-on="cycle" aria-label="Next section" style="display: flex; align-items: flex-start; font-weight: 900; font-size: 20px; line-height: 1; letter-spacing: -0.045em"><span>OP.</span><span data-secno class="or" style="font-size: 11px; letter-spacing: 0; margin-left: 2px">0</span></button>
+<nav aria-label="Sections" style="display: flex; gap: 30px">
+<button type="button" class="navb" data-nav="projects" data-on="goP"><i aria-hidden="true"></i><span>Projects</span><span class="n">06</span></button>
+<button type="button" class="navb" data-nav="experiments" data-on="goE"><i aria-hidden="true"></i><span>Experiments</span><span class="n">03</span></button>
+<button type="button" class="navb" data-nav="writings" data-on="goW"><i aria-hidden="true"></i><span>Writings</span><span class="n">{{ printf "%02d" (len (where site.RegularPages "Section" "posts")) }}</span></button>
+<button type="button" class="navb" data-nav="contact" data-on="goC"><i aria-hidden="true"></i><span>Contact</span></button>
+</nav>
+<div class="hud" aria-hidden="true" style="margin-left: auto; display: flex; align-items: baseline; gap: 18px; font-size: 11px; font-variant-numeric: tabular-nums"><span data-tc>00:00:00:00</span><span class="b"><span data-pct>000</span> %</span></div>
+</div>
+<div data-prog aria-hidden="true" style="position: absolute; left: 0; bottom: -2px; width: 100%; height: 2px; background: #f26522; transform-origin: left; transform: scaleX(0)"></div>
+</div>

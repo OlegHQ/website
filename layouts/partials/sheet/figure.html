@@ -1,0 +1,32 @@
+{{- /* Figure plate from the design. Context: dict "page" "src" "alt" "caption" "width".
+   Small hand-drawn SVGs are inlined and recoloured to the sheet palette; everything else is an <img>. */ -}}
+{{- $page := .page -}}{{ $src := .src -}}
+{{- $u := urls.Parse $src -}}
+{{- $res := false -}}
+{{- if not $u.IsAbs -}}
+  {{- $p := strings.TrimPrefix "./" $u.Path -}}
+  {{- with $page.Resources.Get $p }}{{ $res = . }}{{ else }}{{ with resources.Get (strings.TrimPrefix "/" $p) }}{{ $res = . }}{{ end }}{{ end -}}
+{{- end -}}
+{{- $cap := .caption | default .alt -}}
+{{- $label := .alt | default .caption | default "Figure" | plainify -}}
+{{ "<!--fig-->" | safeHTML }}<figure class="fig plate io"><i class="tl" aria-hidden="true"></i><i class="tr" aria-hidden="true"></i><i class="bl" aria-hidden="true"></i><i class="br" aria-hidden="true"></i>
+{{- $inline := false -}}
+{{- if and $res (eq $res.MediaType.SubType "svg") -}}{{ if and (lt (len $res.Content) 20000) (not (strings.Contains $res.Content "<style")) (not (strings.Contains $res.Content "<image")) }}{{ $inline = true }}{{ end }}{{ end -}}
+{{- if $inline -}}
+  {{- $s := $res.Content -}}
+  {{- $s = replaceRE `(?s)<\?xml.*?\?>` "" $s -}}
+  {{- $s = replaceRE `(?s)<!--.*?-->` "" $s -}}
+  {{- $s = replace $s "#eff1f5" "#e9e8e3" -}}
+  {{- $s = replaceRE "(?i)#f97316" "#f26522" $s -}}
+  {{- $s = replace $s "#2b2b2b" "#1c1c1c" -}}
+  {{- $s = replace $s "#57606a" "#6b6a66" -}}
+  {{- $s = replace $s `fill="#fff"` `fill="#f4f3ee"` -}}
+  {{- $s = replaceRE `font-family="[^"]*"` `font-family="Pragmasevka, ui-monospace, monospace"` $s -}}
+  {{- $s = replace $s "<svg " (printf `<svg role="img" aria-label="%s" style="display: block; width: 100%%; height: auto" ` ($label | htmlEscape)) 1 -}}
+  {{- $s | safeHTML -}}
+{{- else -}}
+  {{- $url := $src -}}{{ with $res }}{{ $url = .RelPermalink }}{{ end -}}
+  <img src="{{ $url }}" alt="{{ $label }}" loading="lazy" decoding="async"
+  {{- if and $res (ne $res.MediaType.SubType "svg") (ne $res.MediaType.SubType "gif") }} width="{{ $res.Width }}" height="{{ $res.Height }}"{{ end }} style="display: block; width: 100%; height: auto{{ with .width }}; max-width: {{ . }}px; margin: 0 auto{{ end }}">
+{{- end -}}
+<figcaption><span class="b">Fig. {{ "<!--fign-->" | safeHTML }}</span>{{ with $cap }}<span>{{ . }}</span>{{ end }}</figcaption></figure>

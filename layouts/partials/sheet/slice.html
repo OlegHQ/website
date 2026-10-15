@@ -1,0 +1,13 @@
+{{- /* Sliced type from the design: the text repeated in n clipped bands that slide in and jitter.
+   Context: dict "text" "n" "from" (px). Mirrors slice_() in the design build. */ -}}
+{{- $t := .text -}}{{ $n := int .n -}}{{ $frm := int .from -}}
+{{- $D := slice 26 -18 40 -30 14 -44 22 -12 -}}
+<span class="sl" role="img" aria-label="{{ $t }}" style=""><span aria-hidden="true" style="visibility: hidden">{{ $t }}</span>
+{{- range $i := seq 0 (sub $n 1) -}}
+{{- $top := cond (eq $i 0) -60.0 (sub (div (mul (float $i) 100.0) $n) 0.25) -}}
+{{- $bot := cond (eq $i (sub $n 1)) -60.0 (sub 100.0 (div (mul (float (add $i 1)) 100.0) $n)) -}}
+{{- $from := cond (eq (mod $i 2) 1) $frm (mul -1 $frm) -}}
+<span class="bd" aria-hidden="true" style="{{ printf "clip-path: inset(%.2f%% -8%% %.2f%% -8%%); --d: %dpx; --from: %dpx; animation-delay: %.2fs, %.1fs; animation-duration: 1.2s, %ds" $top $bot (index $D (mod $i 8)) $from (add 0.1 (mul (float $i) 0.08)) (add 2.5 (mul (float $i) 1.3)) (add 7 (mod (mul $i 3) 6)) | safeCSS }}">{{ $t }}</span>
+{{- end -}}
+</span>
+{{- /**/ -}}

@@ -1,7 +1,7 @@
 <svg viewBox="0 0 520 100" xmlns="http://www.w3.org/2000/svg" font-family="ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace">
   <rect width="520" height="100" fill="#fff"/>
 
-  <text x="10" y="14" font-size="7" fill="#57606a">&gt; WHEN NOT TO USE SERVERLESS</text>
+  <text x="10" y="14" font-size="7" fill="#57606a">When not to use serverless</text>
 
   <!-- Question 1 -->
   <text x="10" y="40" font-size="8" fill="#2b2b2b">&gt;15 min?</text>

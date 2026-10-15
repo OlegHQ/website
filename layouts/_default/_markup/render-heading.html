@@ -1,0 +1,6 @@
+{{- /* h2/h3 open a numbered section of the piece; posts/single.html wraps and numbers them. */ -}}
+{{- if or (eq .Level 2) (eq .Level 3) -}}
+{{ printf "<!--sec:%s-->" .Anchor | safeHTML }}<h{{ .Level }} class="ph{{ .Level }} rise"><span class="hn"></span><span>{{ .Text }}</span></h{{ .Level }}>
+{{- else -}}
+<h{{ .Level }} id="{{ .Anchor }}" class="ph4">{{ .Text }}</h{{ .Level }}>
+{{- end -}}

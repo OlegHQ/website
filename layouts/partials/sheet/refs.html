@@ -1,0 +1,22 @@
+{{- /* A references list becomes the design's numbered link rows. */ -}}
+{{- $b := . -}}
+{{- with findRE `(?s)<ul class="dl">.*?</ul>` $b 1 -}}
+{{- $ul := index . 0 -}}
+{{- $rows := "" -}}
+{{- range $i, $li := findRE `(?s)<li>.*?</li>` $ul -}}
+{{- $in := $li | strings.TrimPrefix "<li>" | strings.TrimSuffix "</li>" | strings.TrimSpace -}}
+{{- $href := "" -}}{{ with findRESubmatch `href="([^"]+)"` $in 1 }}{{ $href = index (index . 0) 1 }}{{ end -}}
+{{- $txt := $in | plainify | htmlUnescape | strings.TrimSpace -}}
+{{- $nm := $txt -}}{{ $hd := "" -}}
+{{- with findRESubmatch `^(.*?)\s+[—–-]\s+(.*)$` $txt 1 }}{{ $nm = index (index . 0) 1 }}{{ $hd = index (index . 0) 2 }}{{ end -}}
+{{- if and (not $hd) $href }}{{ $hd = replace (urls.Parse (htmlUnescape $href)).Host "www." "" }}{{ end -}}
+{{- $inner := printf `<span class="ix">%02d</span><span class="pl" aria-hidden="true"></span><span class="nm" style="font-size: 17px">%s</span><span class="hd">%s</span>` (add $i 1) (htmlEscape $nm) (htmlEscape $hd) -}}
+{{- if $href -}}
+{{- $rows = print $rows (printf `<a class="srow" href="%s">%s<span class="go" aria-hidden="true">→</span></a>` $href $inner) -}}
+{{- else -}}
+{{- $rows = print $rows (printf `<div class="srow">%s</div>` $inner) -}}
+{{- end -}}
+{{- end -}}
+{{- $b = replace $b $ul (printf `<div class="refs">%s</div>` $rows) 1 -}}
+{{- end -}}
+{{- return $b -}}

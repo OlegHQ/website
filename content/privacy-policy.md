@@ -1,3 +1,7 @@
+---
+title: Privacy Policy
+---
+
 # **Privacy Policy**
 
 **Effective Date: 2025-04-25**  

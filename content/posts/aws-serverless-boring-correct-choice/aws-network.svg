@@ -1,7 +1,7 @@
 <svg viewBox="0 0 420 100" xmlns="http://www.w3.org/2000/svg" font-family="ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace">
   <rect width="420" height="100" fill="#fff"/>
 
-  <text x="10" y="14" font-size="7" fill="#57606a">&gt; ONE NETWORK, ZERO EGRESS</text>
+  <text x="10" y="14" font-size="7" fill="#57606a">One network, zero egress</text>
 
   <!-- AWS Network boundary -->
   <rect x="10" y="28" width="310" height="64" rx="4" fill="none" stroke="#f97316" stroke-width="1.5"/>

@@ -1,0 +1,36 @@
+{{- /* Content pipeline shared by posts and pages. Returns dict "lede" "intro" "secs". */ -}}
+{{- $c := string .Content -}}
+{{- $c = replaceRE `^\s*<h1[^>]*>[\s\S]*?</h1>` "" $c 1 -}}
+{{- $lede := "" -}}
+{{- with findRESubmatch `^\s*<blockquote>\s*([\s\S]*?)\s*</blockquote>` $c 1 -}}
+  {{- $lede = replaceRE `</?p>` "" (index (index . 0) 1) | strings.TrimSpace -}}
+  {{- $c = replaceRE `^\s*<blockquote>[\s\S]*?</blockquote>` "" $c 1 -}}
+{{- end -}}
+{{- if not $lede }}{{ $lede = .Description | default .Summary | plainify }}{{ end -}}
+{{- /* Raw <figure><img></figure> blocks in Markdown become figure plates too. */ -}}
+{{- range findRE `(?s)<figure>\s*<img[^>]*>\s*(?:<figcaption>.*?</figcaption>)?\s*</figure>` $c -}}
+  {{- $src := index (index (findRESubmatch `src="([^"]+)"` . 1) 0) 1 -}}
+  {{- $alt := "" }}{{ with findRESubmatch `alt="([^"]*)"` . 1 }}{{ $alt = index (index . 0) 1 | htmlUnescape }}{{ end -}}
+  {{- $cap := "" }}{{ with findRESubmatch `(?s)<figcaption>(.*?)</figcaption>` . 1 }}{{ $cap = index (index . 0) 1 | strings.TrimSpace | safeHTML }}{{ end -}}
+  {{- $c = replace $c . (partial "sheet/figure.html" (dict "page" $ "src" (htmlUnescape $src) "alt" $alt "caption" $cap)) 1 -}}
+{{- end -}}
+{{- $c = partial "sheet/number.html" (dict "html" $c "mark" "<!--fig-->" "slot" "<!--fign-->") -}}
+{{- $c = partial "sheet/number.html" (dict "html" $c "mark" "<!--rec-->" "slot" "<!--recn-->") -}}
+{{- $c = partial "sheet/lists.html" $c -}}
+{{- $parts := split $c "<!--sec:" -}}
+{{- $intro := index $parts 0 -}}
+{{- $secs := slice -}}
+{{- range $k, $p := after 1 $parts -}}
+  {{- $pp := split $p "-->" -}}
+  {{- $id := index $pp 0 -}}
+  {{- $body := delimit (after 1 $pp) "-->" -}}
+  {{- $lv := index (index (findRESubmatch `^<h([23])` $body 1) 0) 1 -}}
+  {{- $title := index (index (findRESubmatch `<span class="hn"></span><span>([\s\S]*?)</span></h[23]>` $body 1) 0) 1 -}}
+  {{- $body = replace $body `<span class="hn"></span>` (printf `<span class="hn">%02d</span>` (add $k 1)) 1 -}}
+  {{- if findRE `(?i)^\s*(references|related resources|releated resources:?|resources|further reading)\s*$` ($title | plainify) -}}
+    {{- $body = partial "sheet/refs.html" $body -}}
+  {{- end -}}
+  {{- $secs = $secs | append (dict "id" $id "lv" $lv "title" $title "body" $body "n" (printf "%02d" (add $k 1))) -}}
+{{- end -}}
+
+{{- return (dict "lede" $lede "intro" $intro "secs" $secs) -}}

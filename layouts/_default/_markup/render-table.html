@@ -1,0 +1,17 @@
+{{- /* Table from the design. Cells reading Native / Partial / Skill fallback / Primary get the square marks and a legend. */ -}}
+{{- $on := slice "Native" "Yes" -}}{{ $half := slice "Partial" "Native-ish" -}}{{ $off := slice "Skill fallback" -}}{{ $pr := slice "Primary" -}}
+{{- $marks := false -}}
+{{- range .TBody }}{{ range $i, $c := . }}{{ if gt $i 0 }}{{ $t := $c.Text | plainify | strings.TrimSpace }}{{ if or (in $on $t) (in $half $t) (in $off $t) (in $pr $t) }}{{ $marks = true }}{{ end }}{{ end }}{{ end }}{{ end -}}
+<div class="tbl io"><table class="{{ if $marks }}mx{{ end }}"><thead>
+{{- range .THead }}<tr>{{ range . }}<th>{{ .Text }}</th>{{ end }}</tr>{{ end -}}
+</thead><tbody>
+{{- range .TBody }}<tr>
+{{- range $i, $c := . }}<td>
+{{- if gt $i 0 }}{{ $t := $c.Text | plainify | strings.TrimSpace -}}
+{{- if in $on $t }}<i class="mk on"></i>{{ else if in $pr $t }}<i class="mk pr"></i>{{ else if in $half $t }}<i class="mk half"></i>{{ else if in $off $t }}<i class="mk off"></i>{{ end -}}
+{{- end }}{{ $c.Text }}</td>{{ end -}}
+</tr>{{ end -}}
+</tbody></table></div>
+{{- if $marks }}
+<div class="legend"><span><i class="mk on"></i>Native</span><span><i class="mk half"></i>Partial</span><span><i class="mk off"></i>Skill fallback</span><span><i class="mk pr"></i>Primary</span></div>
+{{- end }}

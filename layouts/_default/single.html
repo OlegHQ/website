@@ -1,61 +1,42 @@
 {{ define "main" }}
-<section class="w-full max-w-[1078px] mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-32">
-  <article class="w-full max-w-[1078px] mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-16">
-    <div class="w-full">
-      <div class="grid grid-cols-1 lg:grid-cols-10 gap-4 lg:gap-30">
-        <!-- Main Content - Spans 6 columns -->
-        <div class="lg:col-span-6">
-          <div class="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight text-primary">
-            {{ .Title }}
-          </div>
-        </div>
+{{- /* Plain pages (privacy policy): the post layout without contents rail or map. */ -}}
+{{- $B := partial "sheet/body.html" . -}}
+{{- $mark := .Params.mark | default (printf "%s." (substr .Title 0 1)) -}}
+<div class="sheet" data-root data-home="contact" style="position: relative; background: #e9e8e3; overflow-x: clip">
+{{ partial "sheet/topbar.html" (dict "cur" "" "no" "0" "contact" false) }}
 
-        <!-- Side Text - Spans 4 columns -->
-        <div class="lg:col-span-4 mt-4 lg:mt-0">
-          <p class="text-base sm:text-lg lg:text-xl text-primary leading-relaxed font-light">
-            {{ .Description }}
-          </p>
-        </div>
-      </div>
+<header class="io" style="max-width: 1360px; margin: 0 auto; box-sizing: border-box; padding: 52px clamp(16px, 3vw, 40px) 0">
+<div style="display: flex; flex-wrap: wrap; gap: 8px 40px; font-size: 11px; line-height: 14px; margin-bottom: 20px"><a class="b" href="/" style="text-decoration: none">← Index</a>{{ with .Lastmod }}<span class="n b" style="font-size: 11px">Updated {{ .Format "2006 01 02" }}</span>{{ end }}<span class="or b">{{ site.Params.author }}</span></div>
+<div style="display: flex; flex-wrap: wrap; align-items: stretch; gap: 28px 0">
+<div class="panel wipe" style="flex: 0 1 420px; height: 300px; min-width: 280px">
+<span class="cn" aria-hidden="true" style="left: 110px; top: 22px; border-right: 0; border-bottom: 0"></span>
+<span class="cn" aria-hidden="true" style="right: 22px; bottom: 22px; border-left: 0; border-top: 0"></span>
+<span class="dash" aria-hidden="true"></span>
+<div style="position: absolute; left: 22px; top: 22px; bottom: 22px; display: flex; flex-direction: column; justify-content: space-between; font-size: 11px; font-weight: 700"><span>- 01</span><span>- 02</span><span>- 03</span><span>- 04</span></div>
+<div style="position: absolute; right: 30px; bottom: 16px; font-weight: 900; font-size: 230px; line-height: 0.72; letter-spacing: -0.05em">{{ partial "sheet/slice.html" (dict "text" $mark "n" 5 "from" 90) }}</div>
+<span class="sweep" aria-hidden="true"></span>
+</div>
+<div class="ttl" style="flex: 1 1 420px; display: flex; flex-direction: column; justify-content: flex-end; gap: 22px; padding: 0 0 0 28px; border-bottom: 2px solid #1c1c1c">
+<h1 class="rise" style="margin: 0 0 16px; font-size: clamp(34px, 3.9vw, 56px); line-height: 1.02; letter-spacing: -0.035em; font-weight: 800; max-width: 760px; animation-delay: .15s">{{ .Title }}</h1>
+</div>
+</div>
+</header>
 
-      <!-- Article Content -->
-      <div class="mt-8 sm:mt-12 prose prose-lg sm:prose-xl max-w-none">
-        {{ .Content }}
-      </div>
-
-      <!-- Article Metadata -->
-      <div class="mt-8 sm:mt-12 text-sm sm:text-base text-primary/60">
-        <p>Published on {{ .Date.Format "January 2, 2006" }}</p>
-        {{ if .Params.tags }}
-        <div class="mt-2 flex flex-wrap gap-2">
-          {{ range .Params.tags }}
-          <a href="{{ "/tags/" | relLangURL }}{{ . | urlize }}" class="text-primary/60 hover:text-primary">
-            #{{ . }}
-          </a>
-          {{ end }}
-        </div>
-        {{ end }}
-      </div>
-    </div>
-  </article>
+<div style="max-width: 1360px; margin: 0 auto; box-sizing: border-box; padding: 0 clamp(16px, 3vw, 40px); display: flex; gap: 40px; align-items: flex-start">
+<div class="prail" style="flex: 0 0 220px"></div>
+<article class="post" style="flex: 1 1 auto; min-width: 0; padding: 40px 0 120px">
+{{ $B.intro | safeHTML }}
+{{- range $B.secs }}
+<section id="{{ .id }}" data-sec="{{ .id }}" class="ps io">
+{{ .body | safeHTML }}
 </section>
+{{- end }}
+</article>
+</div>
 
-<!-- MathJax Support -->
-{{ $mathjax := false }}
-{{ if isset .Params "mathjax" }}
-  {{ $mathjax = .Params.mathjax }}
-{{ else if isset .Site.Params "mathjax" }}
-  {{ $mathjax = .Site.Params.mathjax }}
-{{ end }}
-{{ if $mathjax }}
-<script>
-  MathJax = {
-    tex: { inlineMath: [['$', '$'], ['\\(', '\\']] },
-    svg: { fontCache: 'global' }
-  };
-</script>
-<script type="text/javascript" id="MathJax-script" async
-  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
-</script>
-{{ end }}
+<div style="max-width: 1360px; margin: 0 auto; box-sizing: border-box; padding: 0 clamp(16px, 3vw, 40px)">
+{{ partial "sheet/footer.html" . }}
+</div>
+<canvas data-wipe aria-hidden="true" width="1" height="1" style="position: fixed; left: 0; top: 0; width: 100%; height: 100%; z-index: 50; pointer-events: none"></canvas>
+</div>
 {{ end }}

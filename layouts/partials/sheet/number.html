@@ -1,0 +1,7 @@
+{{- /* Number marked blocks in order: each `mark` starts a block, every `slot` in it becomes 01, 02, … */ -}}
+{{- $parts := split .html .mark -}}
+{{- $out := index $parts 0 -}}
+{{- range $k, $p := after 1 $parts -}}
+{{- $out = print $out (replace $p $.slot (printf "%02d" (add $k 1))) -}}
+{{- end -}}
+{{- return $out -}}
