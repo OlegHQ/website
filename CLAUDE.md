@@ -4,14 +4,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository Overview
 
-This is a personal website/blog built with Hugo, styled with Tailwind CSS v4, and animated with GSAP. The site is deployed to GitHub Pages and showcases technical writings, services, and portfolio work.
+This is Oleg Pustovit's personal site built with Hugo: projects, experiments and writing on one index sheet, deployed to Cloudflare from `dev`.
 
 ## Tech Stack
 
 - **Static Site Generator**: Hugo (extended version 0.145.0+)
-- **CSS Framework**: Tailwind CSS v4 (via @tailwindcss/cli)
+- **Styles and motion**: plain CSS and canvas JS from the design (`assets/sheet/`); Tailwind and GSAP remain only for /hypertweet/
 - **JavaScript Runtime**: Bun
-- **Animations**: GSAP with ScrollTrigger and TextPlugin
 - **Package Manager**: Bun (with Nix support)
 - **Deployment**: GitHub Pages (automated via GitHub Actions)
 
@@ -48,36 +47,26 @@ bun install              # Install/update JavaScript dependencies
 
 ## Architecture
 
-### Content Structure
-- **content/posts/**: Blog posts in Markdown with front matter
-- **content/hypertweet/**: Static HTML pages for special projects
-- **content/privacy-policy.md**: Site legal pages
+The site is the "index sheet" design (design canvas: claude.ai artifact 2UvkPxmNLYecsfWFPtDnsn, boards Main, MainPhone, Post, PostPhone, UIKit, NotFound). Templates were cut from those boards; keep markup, inline styles and class names as they are so the site stays 1:1 with the design.
 
-### Templating System
-- **layouts/_default/**: Base templates (baseof, single, list)
-- **layouts/partials/**: Reusable components (header, footer, forms)
-- **layouts/index.html**: Homepage template
-- **layouts/posts/single.html**: Blog post template
+### Templates
+- `layouts/index.html`: home (hero, Projects, Experiments, Writings, Contact). Project and experiment plates are hand-drawn in `layouts/partials/home/`; the writings plate (`partials/sheet/writings.html`) lists posts.
+- `layouts/posts/single.html`: a piece. `partials/sheet/body.html` turns `.Content` into the design parts: lede (leading blockquote or description), numbered sections (h2/h3), Fig./Rec. numbering, lists, references rows.
+- Render hooks in `layouts/_default/_markup/`: headings open sections, code blocks become code figures, tables get marks and a legend, block images become figure plates. Small hand-drawn SVGs are inlined and recoloured.
+- Shortcodes: `asciinema`, `asciinema-hero` (front matter `params.asciinema`), `figure`.
+- `layouts/_default/list.html` (/posts/), `single.html` (plain pages), `kit.html` (/ui-kit/, noindex), `layouts/404.html`.
+- `layouts/_default/blank.html` and the old `head.html`/`header.html`/`css.html` partials only serve the standalone /hypertweet/ page.
 
-### Asset Pipeline
-- **assets/js/**: JavaScript modules using ES6 imports
-  - Main entry point: `index.js` loads GSAP and initializes scripts
-  - Component scripts: hero-animations, tech-stack, scroll-utils
-- **assets/css/**: Tailwind CSS source files
-  - Uses Tailwind v4 with CLI compilation
-- **assets/scss/**: Additional SCSS styles
-
-### Static Assets
-- **static/images/**: Favicons and web manifest icons
-- **static/lib/**: Vendor libraries (Font Awesome, Inter font)
+### Assets
+- `assets/sheet/sheet.css` and `kit.css`: the design's CSS. `site.css`: additions for the live site.
+- `assets/sheet/component.js`: the design component, unchanged. `base.js` stands in for the canvas base class; `boot.js` binds `data-on` handlers, posts the newsletter to Substack, adds page-to-page wipes and mounts asciinema-player (vendored in `static/lib/asciinema-player`).
+- Fonts: Hanken Grotesk (Google Fonts) and Pragmasevka (`static/fonts`, OFL). Monospace text is never uppercased or letterspaced.
 
 ## Configuration
 
 ### Main Config (hugo.toml)
-- Site metadata and SEO settings
-- Navigation structure in `params.header`
-- Social links in `params.social`
-- Services and timeline in `params.services` and `params.aboutMe`
+- Site title, author and description in `params`; taxonomies are disabled
+- Contact links and the newsletter live in `layouts/partials/sheet/contact.html`; project counts (06, 03) are in the nav partials and home plates
 - Google Analytics configured via `services.googleAnalytics`
 
 ### Deployment
@@ -93,19 +82,17 @@ bun install              # Install/update JavaScript dependencies
 ## Important Notes
 
 ### When Modifying JavaScript
-- All JS files use ES6 modules with explicit imports
-- GSAP is loaded as minified vendor files in assets/js/gsap/
-- Main bundle entry point is assets/js/index.js
+- The sheet runtime is `assets/sheet/{base,component,boot}.js`, concatenated and minified by Hugo (`partials/sheet/scripts.html`)
+- `assets/js/` (GSAP bundle) only serves /hypertweet/
 
 ### When Adding Content
-- Blog posts go in content/posts/ as Markdown files
+- Blog posts go in content/posts/ as Markdown files; a leading blockquote becomes the Abstract, ## and ### headings become numbered sections
 - Use Hugo front matter for metadata
 - Images for posts should be co-located in the same directory
 
 ### Styling Approach
-- Tailwind CSS v4 is used (newer syntax)
-- Custom styles in assets/css/ and assets/scss/
-- Dark mode is supported throughout the site
+- Site styles are in assets/sheet/; Tailwind (assets/css, assets/scss) only for /hypertweet/
+- Paper #e9e8e3, ink #1c1c1c, one orange #f26522; square corners, no shadows or glow
 
 ### Build Considerations
 - Hugo extended version required for SCSS processing
