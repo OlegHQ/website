@@ -1,5 +1,6 @@
 ---
 title: Privacy Policy
+description: "What olegpustovit.com collects: anonymized Google Analytics usage data, nothing else, and how to opt out."
 ---
 
 # **Privacy Policy**

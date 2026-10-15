@@ -1,0 +1,74 @@
+{{- /* Social card, 1200×630, drawn at build time on the sheet base: a label, the
+   page's own title and line, a big number where the page has one, and a cell
+   field seeded per page. Returns the image resource, published under og/. */ -}}
+{{- $p := . -}}
+{{- $f9 := resources.Get "og/HankenGrotesk-900.ttf" -}}
+{{- $f8 := resources.Get "og/HankenGrotesk-800.ttf" -}}
+{{- $f7 := resources.Get "og/HankenGrotesk-700.ttf" -}}
+{{- $canvas := resources.Get "og/canvas.png" -}}
+{{- $ink := "#1c1c1c" }}{{ $or := "#f26522" -}}
+{{- $posts := (where site.RegularPages "Section" "posts").ByDate -}}
+{{- $label := "" }}{{ $title := "" }}{{ $sub := "" }}{{ $line := "" }}{{ $big := "" }}{{ $seed := 0 }}{{ $name := "" -}}
+{{- if $p.IsHome -}}
+  {{- $label = printf "Projects 06  ·  Experiments 03  ·  Writings %02d" (len $posts) -}}
+  {{- $title = site.Params.author }}{{ $sub = site.Params.description }}{{ $line = site.Params.author }}{{ $name = "home" -}}
+{{- else if and $p.IsPage (eq $p.Section "posts") -}}
+  {{- $idx := 0 }}{{ range $i, $q := $posts }}{{ if eq $q $p }}{{ $idx = $i }}{{ end }}{{ end -}}
+  {{- $mins := math.Max 1 (math.Round (div (float $p.WordCount) 230)) -}}
+  {{- $label = printf "Writing %02d of %02d" (add $idx 1) (len $posts) }}{{ $title = $p.Title }}{{ $big = printf "%02d" (add $idx 1) }}{{ $seed = add $idx 1 -}}
+  {{- $line = printf "%s  ·  %d min read" ($p.Date.Format "2006 01 02") (int $mins) -}}
+  {{- with first 3 ($p.Params.tags | default slice) }}{{ $line = printf "%s  ·  %s" $line (delimit . ", ") }}{{ end -}}
+  {{- $name = printf "posts/%s" (path.Base (strings.TrimSuffix "/" $p.RelPermalink)) -}}
+{{- else if eq $p.Kind "section" -}}
+  {{- $y0 := (index $posts 0).Date.Format "2006" }}{{ $y1 := (index (last 1 $posts) 0).Date.Format "2006" -}}
+  {{- $label = "Writings" }}{{ $title = "Writings" }}{{ $sub = printf "%d pieces on building products, infrastructure and tools, %s to %s." (len $posts) $y0 $y1 -}}
+  {{- $big = printf "%02d" (len $posts) }}{{ $seed = 41 }}{{ $line = site.Params.author }}{{ $name = $p.Section -}}
+{{- else if eq $p.Kind "404" -}}
+  {{- $label = "404" }}{{ $title = "Not found" }}{{ $sub = "This page does not exist. Projects, experiments and writing are one click away." }}{{ $line = "olegpustovit.com" }}{{ $big = "404" }}{{ $seed = 4 }}{{ $name = "not-found" -}}
+{{- else -}}
+  {{- $label = "Page" }}{{ $title = $p.Title | default site.Title }}{{ $sub = $p.Description }}{{ $line = site.Params.author }}{{ $seed = 23 -}}
+  {{- $name = strings.Trim (path.Clean $p.RelPermalink) "/" | replaceRE `/` "-" | default "page" -}}
+{{- end -}}
+
+{{- /* Title and subline wrap inside a 740 px column, clear of the number. */ -}}
+{{- $n := len $title -}}
+{{- $size := cond $p.IsHome 96 (cond (gt $n 90) 46 (cond (gt $n 60) 54 64)) -}}
+{{- $font := cond $p.IsHome $f9 $f8 -}}
+{{- $lines := math.Ceil (div (mul (float $n) (mul $size 0.52)) 740) -}}
+{{- $col := $canvas | images.Filter (images.Text $title (dict "color" $ink "size" $size "linespacing" (int (math.Round (mul $size 0.12))) "x" 0 "y" 0 "font" $font)) -}}
+{{- $filters := slice
+  (images.Text $label (dict "color" $or "size" 24 "x" 60 "y" 112 "font" $f7))
+  (images.Overlay $col 60 158)
+  (images.Text $line (dict "color" $ink "size" 22 "x" 60 "y" 556 "font" $f7))
+-}}
+{{- with $sub -}}
+  {{- $top := add 158 (int (mul $lines (mul $size 1.12))) 24 -}}
+  {{- $sc := $canvas | images.Filter (images.Text . (dict "color" $ink "size" 28 "linespacing" 6 "x" 0 "y" 0 "font" $f7)) -}}
+  {{- $filters = $filters | append (images.Overlay $sc 60 $top) -}}
+{{- end -}}
+{{- with $big -}}
+  {{- $bs := cond (gt (len .) 2) 170 230 -}}
+  {{- $filters = $filters | append (images.Text . (dict "color" $ink "size" $bs "x" (sub 1150 (int (mul (len .) (mul $bs 0.61)))) "y" (cond (gt (len .) 2) 120 96) "font" $f9)) -}}
+{{- end -}}
+
+{{- /* Cell field, 12 × 6: density rises to the right, one orange run; the seed varies it per page. */ -}}
+{{- $cI := resources.Get "og/cell-ink.png" }}{{ $cO := resources.Get "og/cell-or.png" }}{{ $cL := resources.Get "og/cell-ln.png" -}}
+{{- $orow := mod (add $seed 3) 6 }}{{ $ocol := add 5 (mod (mul $seed 7) 5) -}}
+{{- range $y := seq 0 5 -}}
+  {{- range $x := seq 0 11 -}}
+    {{- $px := add 928 (mul $x 18) }}{{ $py := add 404 (mul $y 18) -}}
+    {{- $v := mod (add (mul $seed 7919) (mul $x 131) (mul $y 977) (mul $x $y 37) (mul $seed $x 53)) 101 -}}
+    {{- $th := add (mul (add $x 1) 6) (mul $y 2) -}}
+    {{- if and (eq $y $orow) (ge $x $ocol) (lt $x (add $ocol 3)) -}}
+      {{- $filters = $filters | append (images.Overlay $cO $px $py) -}}
+    {{- else if lt $v (int (mul $th 0.75)) -}}
+      {{- $filters = $filters | append (images.Overlay $cI $px $py) -}}
+    {{- else if lt $v $th -}}
+      {{- $filters = $filters | append (images.Overlay $cL $px $py) -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $img := resources.Get "og/base.png" | images.Filter $filters -}}
+{{- $img = $img.Process "jpg q88" -}}
+{{- return ($img | resources.Copy (printf "og/%s.jpg" $name)) -}}

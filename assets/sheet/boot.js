@@ -65,6 +65,8 @@ function leave(e) {
     var t = u.hash === '#top' ? document.querySelector('[data-root]') : document.getElementById(decodeURIComponent(u.hash.slice(1)));
     if (!t) return;
     e.preventDefault();
+    /* Contents links on a post glide to the section; the full-screen wipe is for leaving a place, not for reading on. */
+    if (a.closest('.toc')) { t.scrollIntoView({ behavior: C.still() ? 'auto' : 'smooth' }); history.pushState(null, '', u.hash); return; }
     if (C.still() || window.innerHeight > 1600 || C._tr) { t.scrollIntoView(); history.pushState(null, '', u.hash); return; }
     start(t, function () { history.pushState(null, '', u.hash); });
     return;

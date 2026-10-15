@@ -10,19 +10,15 @@
 <meta name="robots" content="noindex, follow">
 {{- end }}
 <meta name="theme-color" content="#e9e8e3">
-{{ template "_internal/opengraph.html" . }}
-{{ partial "twitter_cards.html" . }}
-<link rel="icon" type="image/png" href="/images/favicon-96x96.png" sizes="96x96">
-<link rel="icon" type="image/svg+xml" href="/images/favicon.svg">
-<link rel="shortcut icon" href="/images/favicon.ico">
-<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
-<link rel="manifest" href="/images/site.webmanifest">
+{{ partial "sheet/meta.html" (dict "page" . "desc" $desc) }}
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
 {{- with site.Home.OutputFormats.Get "RSS" }}
 <link rel="alternate" type="application/rss+xml" href="{{ .Permalink }}" title="{{ site.Title }}">
 {{- end }}
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@100..900&amp;display=swap">
+<link rel="preload" href="/fonts/hanken-grotesk.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/pragmasevka-regular.woff2" as="font" type="font/woff2" crossorigin>
 {{- $css := slice (resources.Get "sheet/sheet.css") (resources.Get "sheet/site.css") }}
 {{- if eq .Layout "kit" }}{{ $css = $css | append (resources.Get "sheet/kit.css") }}{{ end }}

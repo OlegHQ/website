@@ -59,7 +59,7 @@ The site is the "index sheet" design (design canvas: claude.ai artifact 2UvkPxmN
 ### Assets
 - `assets/sheet/sheet.css` and `kit.css`: the design's CSS. `site.css`: additions for the live site.
 - `assets/sheet/component.js`: the design component, unchanged. `base.js` stands in for the canvas base class; `boot.js` binds `data-on` handlers, posts the newsletter to Substack, adds page-to-page wipes and mounts asciinema-player (vendored in `static/lib/asciinema-player`).
-- Fonts: Hanken Grotesk (Google Fonts) and Pragmasevka (`static/fonts`, OFL). Monospace text is never uppercased or letterspaced.
+- Fonts: Hanken Grotesk (variable, self-hosted) and Pragmasevka, both in `static/fonts` (OFL). Monospace text is never uppercased or letterspaced.
 
 ## Configuration
 
@@ -67,6 +67,8 @@ The site is the "index sheet" design (design canvas: claude.ai artifact 2UvkPxmN
 - Site title, author and description in `params`; taxonomies are disabled
 - Contact links and the newsletter live in `layouts/partials/sheet/contact.html`; project counts (06, 03) are in the nav partials and home plates
 - Google Analytics configured via `services.googleAnalytics`
+- Social and search metadata: `partials/sheet/meta.html` (Open Graph, Twitter/X card, JSON-LD WebSite/Person on home, BlogPosting on posts). Every page gets its own 1200×630 card from `partials/sheet/og-image.html`, drawn at build time on `assets/og/base.png` and published as `/og/<page>.jpg`; give pages a `description` in front matter
+- Icons: `static/favicon.{svg,ico}`, `apple-touch-icon.png`, `icon-{192,512}.png`, `site.webmanifest`; the mark is "OP" in Hanken Grotesk 900 with an orange square
 
 ### Deployment
 - **Branch Strategy**: Push to `dev` branch triggers deployment
