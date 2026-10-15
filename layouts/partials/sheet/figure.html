@@ -8,6 +8,7 @@
   {{- with $page.Resources.Get $p }}{{ $res = . }}{{ else }}{{ with resources.Get (strings.TrimPrefix "/" $p) }}{{ $res = . }}{{ end }}{{ end -}}
 {{- end -}}
 {{- $cap := .caption | default .alt -}}
+{{- if in (slice "image title" "image" "img" "picture" "screenshot") (lower (plainify (string $cap)) | strings.TrimSpace) }}{{ $cap = "" }}{{ end -}}
 {{- $label := .alt | default .caption | default "Figure" | plainify -}}
 {{ "<!--fig-->" | safeHTML }}<figure class="fig plate io"><i class="tl" aria-hidden="true"></i><i class="tr" aria-hidden="true"></i><i class="bl" aria-hidden="true"></i><i class="br" aria-hidden="true"></i>
 {{- $inline := false -}}
