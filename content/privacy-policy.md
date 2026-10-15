@@ -50,9 +50,9 @@ If you have concerns or questions about your privacy while using this site, feel
 
 If you have any questions about this privacy policy, you may contact me at:
 
-📧 [oleg@olegpustovit.com](mailto:oleg@olegpustovit.com)
+[oleg@olegpustovit.com](mailto:oleg@olegpustovit.com)
 
-📍 Zagreb, Croatia
+Zagreb, Croatia
 
 ## **7. Policy Updates**
 

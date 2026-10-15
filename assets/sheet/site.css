@@ -5,7 +5,7 @@ html.tr-in canvas[data-wipe]{background:#1c1c1c;animation:trsafe 0s 2.5s forward
 .ph4{font-size:17px;line-height:1.3;letter-spacing:-.01em;font-weight:700;margin:28px 0 14px;max-width:660px}
 .post hr{border:0;border-top:1px solid #1c1c1c;margin:34px 0;max-width:660px}
 .steps{counter-reset:sn}
-.steps>li>.sn::before{counter-increment:sn;content:counter(sn,decimal-leading-zero)}
+.steps>li>.sn:empty::before{counter-increment:sn;content:counter(sn,decimal-leading-zero)}
 .steps>li>div>p{margin:0 0 8px}
 .steps>li>div>p:last-child,.dl li>p:last-child{margin-bottom:0}
 .dl li>p{margin:0 0 8px}
