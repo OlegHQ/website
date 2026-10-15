@@ -128,6 +128,21 @@ C.bindMap = function (cv) {
   cv.addEventListener('pointerleave', function () { if (!drag) cv.__hov = null; });
 };
 
+/* Long contents lists scroll in their rail; when the current section changes,
+   bring its entry into view without moving the page. */
+(function () {
+  var rail = document.querySelector('.toc-rail'); if (!rail) return;
+  var last = null, busy = false;
+  var follow = function () {
+    busy = false;
+    var on = rail.querySelector('a.toc.on'); if (!on || on === last) return; last = on;
+    if (rail.scrollHeight <= rail.clientHeight) return;
+    var r = rail.getBoundingClientRect(), t = on.getBoundingClientRect();
+    if (t.top < r.top + 40 || t.bottom > r.bottom - 40) rail.scrollTo({ top: rail.scrollTop + (t.top - r.top) - rail.clientHeight / 3, behavior: C.still() ? 'auto' : 'smooth' });
+  };
+  window.addEventListener('scroll', function () { if (!busy) { busy = true; requestAnimationFrame(follow); } }, { passive: true });
+})();
+
 /* Terminal recordings: the design's recording frame hosts asciinema-player. */
 var AP = null;
 function player() {

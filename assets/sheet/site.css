@@ -33,3 +33,22 @@ html.tr-in canvas[data-wipe]{background:#1c1c1c;animation:trsafe 0s 2.5s forward
 @media (max-width:1023px){.kit{overflow-x:auto}}
 .rec .lines.is-native{overflow:auto}
 .rec .lines.is-native div.ap-wrapper{height:auto}
+
+/* A subsection that opens right after its parent section sits closer to it:
+   no section padding stacked on the heading margin. */
+.ps:has(>.ph2)+.ps:has(>.ph3:first-child){padding-top:0}
+.ps:has(>.ph2)+.ps>.ph3:first-child{margin-top:44px}
+
+/* Contents rail: scrolls on its own when the list is taller than the window. */
+.toc-rail nav>*{flex-shrink:0}
+.toc-rail{max-height:calc(100vh - 49px);overflow-y:auto;overscroll-behavior:contain;box-sizing:border-box;padding-bottom:24px;scrollbar-width:thin;scrollbar-color:#1c1c1c transparent}
+.toc-rail::-webkit-scrollbar{width:4px}.toc-rail::-webkit-scrollbar-thumb{background:#1c1c1c}
+
+/* References: rows, not underlined links; a fixed title column so long notes line up. */
+.post .srow,.post .srow:hover{text-decoration:none;color:inherit}
+.refs .srow{align-items:baseline;padding:15px 0 14px;gap:16px;box-sizing:border-box;min-height:53px}
+.refs .srow .nm{flex:0 0 32%;font-size:17px!important;line-height:1.2}
+.refs .srow .hd{flex:1 1 0;min-width:0;font-size:13px;line-height:1.45}
+.refs .srow .go{flex:0 0 auto;margin-left:8px}
+.refs .srow:hover .nm{color:#f26522}
+@media (max-width:640px){.refs .srow{flex-wrap:wrap;row-gap:4px}.refs .srow .nm{flex:1 1 0;min-width:0}.refs .srow .hd{flex:0 0 100%;padding-left:50px;box-sizing:border-box;order:5}}

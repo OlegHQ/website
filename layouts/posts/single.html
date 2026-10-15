@@ -39,7 +39,7 @@
 </header>
 
 <div style="max-width: 1360px; margin: 0 auto; box-sizing: border-box; padding: 0 clamp(16px, 3vw, 40px); display: flex; gap: 40px; align-items: flex-start">
-<aside class="prail" style="position: sticky; top: 49px; flex: 0 0 220px; padding-top: 40px; display: flex; gap: 14px">
+<aside class="prail toc-rail" style="position: sticky; top: 49px; flex: 0 0 220px; padding-top: 40px; display: flex; gap: 14px">
 <div style="position: relative; flex: 0 0 4px; align-self: stretch; background: #d6d5cf"><div data-fill style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; background: #f26522; transform-origin: top; transform: scaleY(0)"></div></div>
 <nav aria-label="Contents" style="display: flex; flex-direction: column"><span class="sp b" style="font-size: 11px; margin-bottom: 12px">Contents</span>
 {{- range $secs }}<a class="tick toc{{ if eq .lv "3" }} sub{{ end }}" data-tick="{{ .id }}" href="#{{ .id }}"><i></i><span class="tn">{{ .n }}</span><span class="tt">{{ .title | safeHTML }}</span></a>{{ end -}}

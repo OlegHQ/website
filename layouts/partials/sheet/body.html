@@ -27,7 +27,7 @@
   {{- $lv := index (index (findRESubmatch `^<h([23])` $body 1) 0) 1 -}}
   {{- $title := index (index (findRESubmatch `<span class="hn"></span><span>([\s\S]*?)</span></h[23]>` $body 1) 0) 1 -}}
   {{- $body = replace $body `<span class="hn"></span>` (printf `<span class="hn">%02d</span>` (add $k 1)) 1 -}}
-  {{- if findRE `(?i)^\s*(references|related resources|releated resources:?|resources|further reading)\s*$` ($title | plainify) -}}
+  {{- if findRE `(?i)^\s*(references|related resources|releated resources:?|related links|links|resources|further reading)\s*$` ($title | plainify) -}}
     {{- $body = partial "sheet/refs.html" $body -}}
   {{- end -}}
   {{- $secs = $secs | append (dict "id" $id "lv" $lv "title" $title "body" $body "n" (printf "%02d" (add $k 1))) -}}
