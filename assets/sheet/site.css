@@ -19,7 +19,9 @@ html.tr-in canvas[data-wipe]{background:#1c1c1c;animation:trsafe 0s 2.5s forward
 .rec .lines div.ap-wrapper div.ap-player{border-radius:0;background:none}
 .rec .lines div.ap-term{border-width:0}
 /* Casts carry their own colours inline; the sheet keeps the terminal in greys. */
-.rec .lines .ap-term{filter:grayscale(1) brightness(1.15)}
+.rec .lines .ap-term-text,.rec .lines .ap-term-symbols{filter:grayscale(1) brightness(1.15)}
+/* The player paints the cursor and cell backgrounds on a canvas: those take the orange, as the design's cursor does. */
+.rec .lines .ap-term canvas{filter:brightness(0) saturate(100%) invert(48%) sepia(79%) saturate(2476%) hue-rotate(349deg) brightness(98%) contrast(94%)}
 .rec .ap-player .ap-overlay-start,.rec .ap-player .ap-overlay-start .ap-play-button,.rec .ap-player .ap-overlay-loading{display:none}
 .rec .play{z-index:2}
 .rec.is-playing .play span{width:14px;height:16px;border:0;border-left:4px solid #f4f3ee;border-right:4px solid #f4f3ee;box-sizing:border-box;margin:0}
