@@ -14,7 +14,7 @@ tags:
   - devops
 ---
 
-![image title](splash.jpg)
+![Abstract grey line drawing used as the article banner](splash.jpg)
 
 As a web developer, having access to a persistent, virtual machine in the cloud is often useful for testing and development. While many cloud-based providers offer limited free tiers (e.g. AWS, GCP, or Azure), Oracle Cloud stands out by providing a true "always free" cloud VM.
 
