@@ -125,6 +125,8 @@ function mountRec(fig) {
   player().then(function (AP2) {
     host.textContent = '';
     var opt = { fit: 'both', controls: false, autoPlay: auto, loop: fig.hasAttribute('data-loop'), preload: true, theme: 'sheet', terminalFontFamily: "'Pragmasevka', ui-monospace, monospace" };
+    /* Phones: keep the recording at a readable size and let it scroll sideways. */
+    if (host.clientWidth < 600) { opt.fit = false; opt.terminalFontSize = '11px'; host.classList.add('is-native'); }
     if (fig.getAttribute('data-start')) opt.poster = fig.getAttribute('data-start');
     if (fig.getAttribute('data-speed')) opt.speed = parseFloat(fig.getAttribute('data-speed'));
     if (fig.getAttribute('data-idle')) opt.idleTimeLimit = parseFloat(fig.getAttribute('data-idle'));

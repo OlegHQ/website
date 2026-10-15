@@ -24,3 +24,7 @@ html.tr-in canvas[data-wipe]{background:#1c1c1c;animation:trsafe 0s 2.5s forward
 .rec .play{z-index:2}
 .rec.is-playing .play span{width:14px;height:16px;border:0;border-left:4px solid #f4f3ee;border-right:4px solid #f4f3ee;box-sizing:border-box;margin:0}
 .rec .lines .ap-player.asciinema-player-theme-sheet{--term-color-foreground:#e9e8e3;--term-color-background:#1c1c1c;--term-color-0:#1c1c1c;--term-color-1:#f26522;--term-color-2:#e9e8e3;--term-color-3:#f26522;--term-color-4:#b3b2ac;--term-color-5:#f26522;--term-color-6:#b3b2ac;--term-color-7:#e9e8e3;--term-color-8:#6b6a66;--term-color-9:#f26522;--term-color-10:#f4f3ee;--term-color-11:#f26522;--term-color-12:#d6d5cf;--term-color-13:#f26522;--term-color-14:#d6d5cf;--term-color-15:#f4f3ee}
+@media (max-width:380px){div:has(> nav[aria-label="Sections"]){gap:12px!important}nav[aria-label="Sections"]{gap:10px!important}.navb{font-size:11px!important;gap:5px!important}.navb .n{display:none}}
+@media (max-width:1023px){.kit{overflow-x:auto}}
+.rec .lines.is-native{overflow:auto}
+.rec .lines.is-native div.ap-wrapper{height:auto}
