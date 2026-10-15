@@ -1,7 +1,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>try{if(sessionStorage.getItem("sheet:tr")&&!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("tr-in")}catch(e){}</script>
-{{- $desc := or .Description site.Params.description | plainify | htmlUnescape | strings.TrimSpace }}
+{{- /* Description: front matter first; a post without one uses its own abstract (or opening text), never the site-wide line. */ -}}
+{{- $desc := .Description -}}
+{{- if and (not $desc) .IsPage (eq .Section "posts") -}}
+  {{- $c := replaceRE `^\s*<h1[^>]*>[\s\S]*?</h1>` "" (string .Content) 1 -}}
+  {{- with findRESubmatch `^\s*<blockquote>\s*([\s\S]*?)\s*</blockquote>` $c 1 }}{{ $desc = index (index . 0) 1 }}{{ end -}}
+  {{- if not $desc }}{{ with findRE `(?s)<p>.*?</p>` (replaceRE `(?s)<figure.*?</figure>` "" $c) 1 }}{{ $desc = index . 0 }}{{ end }}{{ end -}}
+{{- end -}}
+{{- $desc = or $desc site.Params.description | plainify | htmlUnescape | strings.TrimSpace | replaceRE `\s+` " " | truncate 200 }}
 <title>{{ if .IsHome }}{{ site.Title }}{{ else if eq .Kind "404" }}Not found | {{ site.Title }}{{ else }}{{ .Title | default "Note" }} | {{ site.Title }}{{ end }}</title>
 <meta name="description" content="{{ $desc }}">
 <meta name="author" content="{{ site.Params.author }}">
