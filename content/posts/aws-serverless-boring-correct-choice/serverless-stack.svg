@@ -3,7 +3,7 @@
 
   <!-- Row 1: Main flow -->
   <!-- PRESENTATION -->
-  <text x="12" y="18" font-size="8" fill="#57606a">&gt; PRESENTATION</text>
+  <text x="12" y="18" font-size="8" fill="#57606a">Presentation</text>
   <rect x="12" y="26" width="60" height="22" rx="2" fill="none" stroke="#2b2b2b" stroke-width="1.2"/>
   <text x="42" y="40" text-anchor="middle" font-size="8" fill="#2b2b2b">CloudFront</text>
 
@@ -14,7 +14,7 @@
   <text x="108" y="40" text-anchor="middle" font-size="8" fill="#2b2b2b">S3</text>
 
   <!-- API -->
-  <text x="150" y="18" font-size="8" fill="#57606a">&gt; API</text>
+  <text x="150" y="18" font-size="8" fill="#57606a">API</text>
   <line x1="126" y1="37" x2="148" y2="37" stroke="#2b2b2b" stroke-width="1.2"/>
   <polygon points="148,37 143,34 143,40" fill="#2b2b2b"/>
 
@@ -22,7 +22,7 @@
   <text x="187" y="40" text-anchor="middle" font-size="8" fill="#2b2b2b">API Gateway</text>
 
   <!-- COMPUTE - Lambda highlighted in orange -->
-  <text x="246" y="18" font-size="8" fill="#57606a">&gt; COMPUTE</text>
+  <text x="246" y="18" font-size="8" fill="#57606a">Compute</text>
   <line x1="222" y1="37" x2="244" y2="37" stroke="#f97316" stroke-width="1.2"/>
   <polygon points="244,37 239,34 239,40" fill="#f97316"/>
 
@@ -30,7 +30,7 @@
   <text x="274" y="40" text-anchor="middle" font-size="8" fill="#fff" font-weight="600">Lambda</text>
 
   <!-- DATA -->
-  <text x="324" y="18" font-size="8" fill="#57606a">&gt; DATA</text>
+  <text x="324" y="18" font-size="8" fill="#57606a">Data</text>
   <line x1="300" y1="37" x2="322" y2="37" stroke="#2b2b2b" stroke-width="1.2"/>
   <polygon points="322,37 317,34 317,40" fill="#2b2b2b"/>
 
@@ -44,7 +44,7 @@
   <text x="432" y="40" text-anchor="middle" font-size="8" fill="#2b2b2b">SQS</text>
 
   <!-- Row 2: Background -->
-  <text x="324" y="72" font-size="8" fill="#57606a">&gt; BACKGROUND</text>
+  <text x="324" y="72" font-size="8" fill="#57606a">Background</text>
   <line x1="432" y1="48" x2="432" y2="60" stroke="#2b2b2b" stroke-width="1.2"/>
   <line x1="432" y1="60" x2="390" y2="60" stroke="#2b2b2b" stroke-width="1.2"/>
   <line x1="390" y1="60" x2="390" y2="78" stroke="#2b2b2b" stroke-width="1.2"/>
@@ -54,7 +54,7 @@
   <text x="390" y="94" text-anchor="middle" font-size="8" fill="#fff" font-weight="600">Lambda Workers</text>
 
   <!-- OBSERVABILITY -->
-  <text x="480" y="18" font-size="8" fill="#57606a">&gt; OBSERVABILITY</text>
+  <text x="480" y="18" font-size="8" fill="#57606a">Observability</text>
   <rect x="480" y="26" width="72" height="22" rx="2" fill="none" stroke="#2b2b2b" stroke-width="1.2"/>
   <text x="516" y="40" text-anchor="middle" font-size="8" fill="#2b2b2b">CloudWatch</text>
 

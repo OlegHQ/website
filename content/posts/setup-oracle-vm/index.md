@@ -14,7 +14,7 @@ tags:
   - devops
 ---
 
-![image title](splash.jpg)
+![Abstract grey line drawing used as the article banner](splash.jpg)
 
 As a web developer, having access to a persistent, virtual machine in the cloud is often useful for testing and development. While many cloud-based providers offer limited free tiers (e.g. AWS, GCP, or Azure), Oracle Cloud stands out by providing a true "always free" cloud VM.
 
@@ -150,7 +150,7 @@ I've been using this VM for nearly a year for development and running test web a
 
 The biggest upside in this setup is that the same terminal is available from any machine (given the fact that there are credentials). Oracle's free VM is a solid playground for deployment tests, CLI experimentation and even lightweight app hosting.
 
-## Releated resources:
+## Related resources
 
 - [Oracle always free resources](https://docs.oracle.com/en-us/iaas/Content/FreeTier/freetier_topic-Always_Free_Resources.htm)
 - [Configuring VCN](https://docs.oracle.com/en/learn/lab_virtual_network/index.html)

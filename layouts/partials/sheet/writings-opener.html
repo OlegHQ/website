@@ -1,0 +1,16 @@
+{{- $posts := (where site.RegularPages "Section" "posts").ByDate.Reverse -}}
+{{- $nw := printf "%02d" (len $posts) -}}
+<div class="io shd" style="display: flex; align-items: stretch; gap: 0; margin-bottom: 56px">
+<div class="panel wipe" style="flex: 0 1 420px; height: 210px">
+<span class="cn" aria-hidden="true" style="left: 110px; top: 22px; border-right: 0; border-bottom: 0"></span>
+<span class="cn" aria-hidden="true" style="right: 22px; bottom: 22px; border-left: 0; border-top: 0"></span>
+<span class="dash" aria-hidden="true"></span>
+<div style="position: absolute; left: 22px; top: 22px; bottom: 22px; display: flex; flex-direction: column; justify-content: space-between; font-size: 11px; font-weight: 700"><span>- 01</span><span>- 02</span><span>- 03</span><span>- 04</span></div>
+<div data-par="0.06" style="position: absolute; right: 30px; bottom: 14px; font-weight: 900; font-size: 190px; line-height: 0.72; letter-spacing: -0.05em"><span class="sl" role="img" aria-label="03" style=""><span aria-hidden="true" style="visibility: hidden">03</span><span class="bd" aria-hidden="true" style="clip-path: inset(-60.00% -8% 80.00% -8%); --d: 26px; --from: -90px; animation-delay: 0.10s, 2.5s; animation-duration: 1.2s, 7s">03</span><span class="bd" aria-hidden="true" style="clip-path: inset(19.75% -8% 60.00% -8%); --d: -18px; --from: 90px; animation-delay: 0.18s, 3.8s; animation-duration: 1.2s, 10s">03</span><span class="bd" aria-hidden="true" style="clip-path: inset(39.75% -8% 40.00% -8%); --d: 40px; --from: -90px; animation-delay: 0.26s, 5.1s; animation-duration: 1.2s, 7s">03</span><span class="bd" aria-hidden="true" style="clip-path: inset(59.75% -8% 20.00% -8%); --d: -30px; --from: 90px; animation-delay: 0.34s, 6.4s; animation-duration: 1.2s, 10s">03</span><span class="bd" aria-hidden="true" style="clip-path: inset(79.75% -8% -60.00% -8%); --d: 14px; --from: -90px; animation-delay: 0.42s, 7.7s; animation-duration: 1.2s, 7s">03</span></span></div>
+<span class="sweep" aria-hidden="true"></span>
+</div>
+<div class="shd-t" style="flex: 1 1 200px; display: flex; flex-direction: column; justify-content: flex-end; padding: 0 0 0 28px; border-bottom: 2px solid #1c1c1c">
+<div class="rise" style="display: flex; align-items: baseline; gap: 18px; animation-delay: .2s"><h2 class="sp b" data-scr style="margin: 0; font-size: 13px">Writings</h2><span class="n">{{ $nw }}</span></div>
+<p class="rise" style="margin: 8px 0 14px; max-width: 300px; animation-delay: .3s">Long-form notes from building products with small teams.</p>
+</div>
+</div>

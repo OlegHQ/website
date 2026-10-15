@@ -1,0 +1,2 @@
+{{- $js := slice (resources.Get "sheet/base.js") (resources.Get "sheet/component.js") (resources.Get "sheet/boot.js") | resources.Concat "js/sheet.js" | minify | fingerprint }}
+<script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}" defer></script>

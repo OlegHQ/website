@@ -1,3 +1,8 @@
+---
+title: Privacy Policy
+description: "What olegpustovit.com collects: anonymized Google Analytics usage data, nothing else, and how to opt out."
+---
+
 # **Privacy Policy**
 
 **Effective Date: 2025-04-25**  
@@ -46,9 +51,9 @@ If you have concerns or questions about your privacy while using this site, feel
 
 If you have any questions about this privacy policy, you may contact me at:
 
-📧 [oleg@olegpustovit.com](mailto:oleg@olegpustovit.com)
+[oleg@olegpustovit.com](mailto:oleg@olegpustovit.com)
 
-📍 Zagreb, Croatia
+Zagreb, Croatia
 
 ## **7. Policy Updates**
 

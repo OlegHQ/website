@@ -1,0 +1,29 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>try{if(sessionStorage.getItem("sheet:tr")&&!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("tr-in")}catch(e){}</script>
+{{- $desc := or .Description site.Params.description | plainify | htmlUnescape | strings.TrimSpace }}
+<title>{{ if .IsHome }}{{ site.Title }}{{ else if eq .Kind "404" }}Not found | {{ site.Title }}{{ else }}{{ .Title | default "Note" }} | {{ site.Title }}{{ end }}</title>
+<meta name="description" content="{{ $desc }}">
+<meta name="author" content="{{ site.Params.author }}">
+<link rel="canonical" href="{{ .Permalink }}">
+{{- if or .Params.noindex (in (slice "taxonomy" "term" "404") .Kind) }}
+<meta name="robots" content="noindex, follow">
+{{- end }}
+<meta name="theme-color" content="#e9e8e3">
+{{ partial "sheet/meta.html" (dict "page" . "desc" $desc) }}
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+{{- with site.Home.OutputFormats.Get "RSS" }}
+<link rel="alternate" type="application/rss+xml" href="{{ .Permalink }}" title="{{ site.Title }}">
+{{- end }}
+<link rel="preload" href="/fonts/hanken-grotesk.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/pragmasevka-regular.woff2" as="font" type="font/woff2" crossorigin>
+{{- $css := slice (resources.Get "sheet/sheet.css") (resources.Get "sheet/site.css") }}
+{{- if eq .Layout "kit" }}{{ $css = $css | append (resources.Get "sheet/kit.css") }}{{ end }}
+{{- $css = $css | resources.Concat (cond (eq .Layout "kit") "css/sheet-kit.css" "css/sheet.css") | minify | fingerprint }}
+<link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+{{- if hugo.IsProduction }}{{ with site.Config.Services.GoogleAnalytics.ID }}
+{{ template "_internal/google_analytics.html" $ }}
+{{- end }}{{ end }}

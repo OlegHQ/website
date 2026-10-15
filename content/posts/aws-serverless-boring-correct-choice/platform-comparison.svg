@@ -1,7 +1,7 @@
 <svg viewBox="0 0 540 110" xmlns="http://www.w3.org/2000/svg" font-family="ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace">
   <rect width="540" height="110" fill="#fff"/>
 
-  <text x="10" y="14" font-size="7" fill="#57606a">&gt; PLATFORM COMPARISON</text>
+  <text x="10" y="14" font-size="7" fill="#57606a">Platform comparison</text>
 
   <!-- Headers -->
   <text x="140" y="30" font-size="7" fill="#57606a" text-anchor="middle">Memory</text>

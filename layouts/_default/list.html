@@ -1,43 +1,17 @@
-{{ define "main"}}
-<section class="min-h-screen w-full max-w-[1078px] mx-auto px-4 sm:px-6 lg:px-8 pt-48 sm:pt-48 writings-reveal">
-  <!-- Section Header -->
-  <div class="grid grid-cols-1 lg:grid-cols-10 border-b border-primary/40 pb-8 gap-0 sm:mb-12">
-    <div class="lg:col-span-10">
-      <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-primary">{{ .Title }}</h1>
-    </div>
-  </div>
-
-  <!-- Get all years -->
-  {{ $pages := .Pages.ByDate.Reverse }}
-  {{ $groups := $pages.GroupByDate "2006" }}
-
-  <!-- Writings List by Year -->
-  <div class="space-y-8">
-    {{ range $groups }}
-    <div class="mb-16">
-      <h2 class="text-2xl mb-2 font-bold text-primary">{{ .Key }}</h2>
-      <div class="space-y-0">
-        {{ range .Pages }}
-        <article class="writing-item group py-8 border-b border-primary/10 last:border-0">
-          <div class="flex flex-col sm:grid sm:grid-cols-[200px_1fr] gap-2 sm:gap-4">
-            <time datetime="{{ .Date }}" class="text-sm sm:text-lg text-primary/60 order-1 sm:order-none">
-              {{ .Date.Format "January 2, 2006" }}
-            </time>
-            <h3 class="text-xl sm:text-2xl font-bold text-primary group-hover:text-primary/80 transition-colors order-2 sm:order-none">
-              <a href="{{ .Permalink }}" class="block">{{ .Title }}</a>
-            </h3>
-          </div>
-        </article>
-        {{ end }}
-      </div>
-    </div>
-    {{ end }}
-  </div>
-
-  {{ if eq .Site.Params.showAllPostsArchive false }}
-  <div class="mt-16">
-    {{ partial "pagination.html" . }}
-  </div>
-  {{ end }}
+{{ define "main" }}
+<div class="sheet" data-root data-home="writings" style="position: relative; background: #e9e8e3; overflow-x: clip">
+{{ partial "sheet/topbar.html" (dict "cur" "writings" "no" "3" "contact" true) }}
+<div style="max-width: 1360px; margin: 0 auto; box-sizing: border-box; padding: 52px clamp(16px, 3vw, 40px) 0">
+<h1 class="sp b" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%)">{{ .Title }}</h1>
+<section id="writings" data-sec="writings" style="scroll-margin-top: 49px; padding-bottom: 150px">
+{{ partial "sheet/writings-opener.html" . }}
+{{ partial "sheet/writings.html" . }}
 </section>
+<section id="contact" data-sec="contact" style="scroll-margin-top: 49px; padding-bottom: 120px">
+{{ partial "sheet/contact.html" . }}
+</section>
+{{ partial "sheet/footer.html" . }}
+</div>
+<canvas data-wipe aria-hidden="true" width="1" height="1" style="position: fixed; left: 0; top: 0; width: 100%; height: 100%; z-index: 50; pointer-events: none"></canvas>
+</div>
 {{ end }}

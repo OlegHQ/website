@@ -1,0 +1,5 @@
+{{- if .IsBlock -}}
+{{- partial "sheet/figure.html" (dict "page" .Page "src" .Destination "alt" .PlainText "caption" .Title) -}}
+{{- else -}}
+<img src="{{ .Destination | safeURL }}" alt="{{ .PlainText }}" loading="lazy" decoding="async" style="max-width: 100%; height: auto">
+{{- end -}}

@@ -1,389 +1,141 @@
 {{ define "main" }}
-<style>
-  /* need to have smooth scroll behavior on this page */
-  html {
-    scroll-behavior: smooth;
-  }
-</style>
-<script type="application/json" id="skills-data">
-  {{ $skills := resources.Get "skills.toml" | transform.Unmarshal }}
-  {
-    "primary": {{ $skills.skills.primary  }},
-    "secondary": {{ $skills.skills.secondary  }},
-    "tertiary": {{ $skills.skills.tertiary  }}
-  }
-</script>
+{{- $posts := (where site.RegularPages "Section" "posts").ByDate.Reverse -}}
+{{- $nw := printf "%02d" (len $posts) -}}
+{{- $y0 := "" }}{{ $y1 := "" }}{{ with $posts }}{{ $y0 = (index (last 1 .) 0).Date.Format "2006" }}{{ $y1 = (index . 0).Date.Format "2006" }}{{ end -}}
+<div class="sheet" data-root style="position: relative; background: #e9e8e3; overflow-x: clip">
 
-<!-- Hero Section -->
-<section
-  id="hero"
-  class="section w-full max-w-[1078px] mx-auto px-4 sm:px-6 lg:px-8 min-h-screen flex items-center"
->
-  <div class="w-full">
-    <div class="grid grid-cols-1 lg:grid-cols-10 gap-4 lg:gap-30">
-      <!-- Main Heading - Spans 6 columns -->
-      <div class="lg:col-span-6">
-        <div class="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight text-primary">
-          <div class="terminal-container">
-            <span id="terminal-line1" class="terminal-text whitespace-nowrap">Built MVPs.</span>
-            <span id="terminal-line2" class="terminal-text whitespace-nowrap">Led teams.</span>
-            <span id="terminal-line3" class="terminal-text whitespace-nowrap">Survived funding drama.</span>
-            <span class="cursor"></span>
-          </div>
-          <!-- Hidden text for SEO and backup -->
-          <h1 class="hidden-text">
-            Built MVPs. Led teams. Survived funding drama.
-          </h1>
-        </div>
-      </div>
+{{ partial "sheet/topbar-home.html" . }}
 
-      <!-- Side Text - Spans 4 columns -->
-      <div class="lg:col-span-4 mt-4 lg:mt-0">
-        <p
-          class="scrambled-text sidebar-text text-base sm:text-lg lg:text-xl text-primary leading-relaxed font-light"
-        >
-          {{ .Site.Params.hero.sidebarText | markdownify }}
-        </p>
-      </div>
-    </div>
-
-    <!-- CTA Section -->
-    <div class="relative h-12">
-      <a
-        href="#collaborate"
-        class="inline-flex items-center text-base sm:text-lg lg:text-xl font-semibold group text-primary hover:text-primary/80 transition-colors absolute bottom-0"
-      >
-        {{ .Site.Params.hero.cta }}
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-5 w-5 sm:h-6 sm:w-6 ml-2 transform group-hover:translate-x-1 transition-transform"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M17 8l4 4m0 0l-4 4m4-4H3"
-          />
-        </svg>
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- Introduction Section -->
-<section
-  id="introduction"
-  class="w-full bg-black text-white py-32 introduction-reveal"
->
-  <div class="w-full max-w-[1078px] mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="grid grid-cols-1 lg:grid-cols-20 gap-0">
-      <!-- Name Block -->
-      <div class="lg:col-span-9 relative flex flex-col justify-center overflow-hidden">
-        <div id="introduction-name"
-          class="absolute inset-0 bg-gradient-to-br from-primary/20 to-primary/5 rounded-lg"
-        ></div>
-        <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black/80 rounded-lg"></div>
-        <div class="name-slide-container relative z-10 mt-[-50px]">
-          <h2 class="text-5xl text-right lg:text-8xl font-bold leading-none">
-            {{- $parts := split .Site.Params.introduction.title " " }}
-            <span class="name-part block">
-              <span class="name-slide inline-block">{{ index $parts 0}}</span>
-            </span>
-            <span class="name-part block overflow-hidden">
-              <span class="name-slide inline-block">{{ index $parts 1}}</span>
-            </span>
-          </h2>
-        </div>
-      </div>
-      <div class="lg:col-span-3" ></div>
-      <!-- Introduction Text -->
-      <div class="lg:col-span-8 flex flex-col gap-8 py-24 overflow-hidden intro-parallax-text">
-        <p class="text-lg lg:text-xl leading-relaxed">
-          Lead Software Engineer specializing in scalable infrastructure for
-          early-stage startups. I've taken multiple products from zero to MVP—hands-on
-          with Kubernetes, Go, GraphQL, and the rest of the modern cloud jungle.
-        </p>
-        <p class="text-lg lg:text-xl leading-relaxed">
-          This site shares lessons from the buildout trenches: system design patterns,
-          startup engineering strategies, and practical technical write-ups.
-        </p>
-        <p class="text-lg lg:text-xl leading-relaxed">
-          Interested in <span class="font-bold">co-founding opportunities</span> and <span class="font-bold">long-term technical leadership</span> for teams solving real problems at scale.
-        </p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Services Section -->
-<section
-  id="services"
-  class="section w-full max-w-[1078px] mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-32"
->
-  <!-- Section Header -->
-  <div class="grid grid-cols-1 lg:grid-cols-10 gap-0 mb-12 sm:mb-20">
-    <div class="lg:col-span-4 services-header">
-      <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-primary">What I Do</h2>
-    </div>
-    <div class="lg:col-span-6 services-tagline mt-4 lg:mt-0">
-      <p class="typewriter text-lg sm:text-xl lg:text-2xl text-primary font-light">
-        > I build things that make a difference.
-      </p>
-    </div>
-  </div>
-
-  <!-- Services Grid -->
-  <div class="grid grid-cols-1 lg:grid-cols-10 lg:gap-x-30">
-    <!-- MVP Development -->
-    {{ range $index, $service := .Site.Params.services }}
-    <div
-      class="lg:col-span-3 text-primary text-left text-lg pr-8 text-md leading-none opacity-70 font-extralight tracking-tight"
-    >
-      <div class="mt-1">0{{ add $index 1 }}</div>
-    </div>
-    <div class="lg:col-span-7 service-card">
-      <h3 class="text-xl lg:text-2xl font-bold mb-4 text-primary mt-0">
-        {{ $service.title }}
-      </h3>
-      <p class="text-primary lg:text-lg text-primary/80 font-light">
-        {{ $service.description }}
-      </p>
-    </div>
-    <!-- Separator Line -->
-    <div class="lg:col-span-10 my-10">
-      <div class="service-separator h-px bg-primary/20 overflow-hidden">
-        <div class="separator-line w-0 h-full bg-text-dark"></div>
-      </div>
-    </div>
-    {{ end }}
-  </div>
-</section>
-<section
-  id="tech-stack"
-  class="section w-full max-w-[1078px] mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-32 tech-stack-reveal overflow-hidden hidden lg:block"
->
-  <!-- Tech Stack -->
-  <div class="mt-8 sm:mt-16 lg:mt-32 tech-stack">
-    <div class="lg:col-span-4 mb-6 sm:mb-8">
-      <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-primary">> tech stack <span id="tech-hover-text" class="text-primary/60"></span></h2>
-    </div>
-    <div class="tech-grid" id="tech-grid">
-      <!-- Tech items will be populated by JavaScript -->
-    </div>
-  </div>
-</section>
-
-<!-- About Me Section -->
-<section
-  id="about-me"
-  class="section w-full max-w-[1078px] mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-32 about-me-reveal"
->
-  <!-- Section Header -->
-  <div class="grid grid-cols-1 lg:grid-cols-10 gap-0 mb-12 sm:mb-20">
-    <div class="lg:col-span-4">
-      <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-primary">About Me</h2>
-    </div>
-    <div class="lg:col-span-6 mt-4 lg:mt-0">
-      <p class="typewriter text-lg sm:text-xl lg:text-2xl text-primary font-light">
-        > bridging vision and execution
-      </p>
-    </div>
-  </div>
-
-  <!-- Full Width Introduction -->
-  <div class="mb-24">
-    <p
-      class="text-xl lg:text-2xl text-primary/80 leading-relaxed max-w-[800px]"
-    >
-      {{ .Site.Params.aboutMe.text }}
-    </p>
-  </div>
-
-  <!-- Two Column Layout with Separator -->
-  <div class="relative">
-    <!-- Top Separator Line -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
-      <div class="h-px bg-primary/20"></div>
-      <div class="h-px bg-primary/20 hidden lg:block"></div>
-    </div>
-
-    <div class="mb-24 grid grid-cols-1 lg:grid-cols-2 gap-16 pt-6">
-      <!-- Column 1: Values -->
-      <div class="values-section">
-        <h3 class="text-2xl font-bold text-primary mb-12">Values</h3>
-        <div class="space-y-8">
-          {{ range $index, $item := .Site.Params.aboutMe.values }}
-          <div class="group">
-            <div class="relative h-16 overflow-hidden">
-              <p class="my-3 text-5xl font-bold text-primary/80 absolute bottom-0 left-0 number-slide">0{{ add $index 1 }}</p>
-            </div>
-            <div class="h-px bg-primary/20"></div>
-            <p
-              class="text-xl text-primary group-hover:text-primary/80 transition-colors"
-            >
-              {{ $item.value }}
-            </p>
-          </div>
-          {{ end }}
-        </div>
-      </div>
-
-      <!-- Column 2: Timeline -->
-      <div>
-        <h3 class="text-2xl font-bold text-primary mb-12">Timeline</h3>
-        <div class="relative">
-          <!-- Continuous vertical line that spans all entries -->
-          <div
-            class="absolute left-[-1px] top-[6px] bottom-0 w-[1px] bg-primary/20"
-          ></div>
-          <!-- Timeline -->
-          <div >
-            <!-- <div class="space-y-8 relative"> -->
-              <!-- Continuous vertical line that spans all entries -->
-              <div
-                class="absolute left-[-1px] top-[6px] bottom-0 w-[1px] bg-primary/20"
-              ></div>
-              {{ range .Site.Params.aboutMe.timeline }}
-              <div class="relative mb-8 pl-8">
-                <div
-                  class="absolute left-[-3.5px] top-[6px] w-[6px] h-[6px] rounded-full bg-primary"
-                ></div>
-                <div class="text-xl font-bold text-primary mb-2">
-                  {{ .year }}
-                </div>
-                <div class="text-lg font-semibold text-primary mb-2">
-                  {{ .description }}
-                </div>
-                <p class="text-primary/80">{{ .subtext }}</p>
-              </div>
-              {{ end }}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Blog Writings Grid Section -->
-<section
-  id="writings"
-  class="section w-full max-w-[1078px] mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-32 writings-reveal"
->
-  <!-- Section Header -->
-  <div class="grid grid-cols-1 lg:grid-cols-10 gap-0 mb-12 sm:mb-20">
-    <div class="lg:col-span-4">
-      <a href="/posts" class="text-3xl sm:text-4xl lg:text-5xl text-primary font-bold hover:underline">Writings</a>
-    </div>
-    <div class="lg:col-span-6 mt-4 lg:mt-0">
-      <p class="typewriter text-lg sm:text-xl lg:text-2xl text-primary font-light">
-        > thoughts, ideas, and learnings
-      </p>
-    </div>
-  </div>
-
-  <!-- Writings List -->
-  <div class="space-y-0">
-    {{ $mainPosts := (sort (where site.RegularPages "Type" "in"
-    site.Params.mainSections) "Date" "desc") }} {{ range $mainPosts }}
-    <article
-      class="writing-item group py-8 border-b border-primary/10 last:border-0"
-    >
-      <div class="flex flex-col sm:grid sm:grid-cols-[200px_1fr] gap-2 sm:gap-4">
-        <time datetime="{{ .Date }}" class="text-sm sm:text-lg text-primary/60 order-1 sm:order-none"
-          >{{ .Date.Format "January 2, 2006" }}</time
-        >
-        <h3
-          class="text-xl sm:text-2xl font-bold text-primary group-hover:text-primary/80 transition-colors order-2 sm:order-none"
-        >
-          <a href="{{ .Permalink }}" class="block"> {{ .Title }} </a>
-        </h3>
-      </div>
-    </article>
-    {{ end }}
-  </div>
-</section>
-
-{{ partial "form.html" . }}
-
-<!-- Collaborate Section -->
- <div class="bg-blue-600" id="collaborate-wrapper">
-  <section
-    id="collaborate"
-    class="bg-blue-600 text-white section w-full mx-auto px-4 sm:px-6 lg:px-8 pt-32 collaborate-reveal relative overflow-hidden"
-  >
-    <div class="collaborate-parallax absolute inset-0" style="transform: translateZ(0);"></div>
-    <div class="max-w-[1078px] mx-auto relative z-10">
-      <!-- Section Header -->
-      <div class="grid grid-cols-1 lg:grid-cols-10 gap-0 mb-20">
-        <div class="lg:col-span-10">
-          <h2 class="text-4xl lg:text-5xl font-bold collaborate-title">Let's Build Something</h2>
-        </div>
-      </div>
-
-      <!-- Two Column Layout -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 mb-16">
-        <!-- Open To Column -->
-        <div>
-          <div class="h-[2px] bg-white mb-8"></div>
-          <h3 class="text-2xl font-bold mb-6">Open To:</h3>
-          <ul class="space-y-2">
-            <li class="flex items-start">
-              <span class="mr-2 font-mono">&gt;</span>
-              <span class="text-lg">Joining early-stage startups</span>
-            </li>
-            <li class="flex items-start">
-              <span class="mr-2 font-mono">&gt;</span>
-              <span class="text-lg">Consulting for equity + cash</span>
-            </li>
-            <li class="flex items-start">
-              <span class="mr-2 font-mono">&gt;</span>
-              <span class="text-lg"
-                >Long-term engagements with stable funding</span
-              >
-            </li>
-          </ul>
-        </div>
-
-        <!-- Won't Do Column -->
-        <div>
-      <div class="h-[2px] bg-white mb-8"></div>
-          <h3 class="text-2xl font-bold mb-6">Won't Do:</h3>
-          <ul class="space-y-2">
-            <li class="flex items-start">
-              <span class="mr-2 font-mono">&gt;</span>
-              <span class="text-lg">Work "for exposure"</span>
-            </li>
-            <li class="flex items-start">
-              <span class="mr-2 font-mono">&gt;</span>
-              <span class="text-lg">Fix your crypto scam dApp</span>
-            </li>
-            <li class="flex items-start">
-              <span class="mr-2 font-mono">&gt;</span>
-              <span class="text-lg">Join 12-founder teams with no product</span>
-            </li>
-          </ul>
-        </div>
-      </div>
-
-      <!-- separator-->
-      <div class="h-[2px] bg-white"></div>
-      <!-- Contact Section -->
-      <div class="mt-8">
-        <p class="text-lg sm:text-xl mb-4">
-          No spam, no "quick calls," no vague ideas. Be real.
-        </p>
-        {{ $email := (index (where .Site.Params.social "name" "email") 0).link }}
-        <a
-          href="mailto:{{ $email }}"
-          class="typewriter-big text-[clamp(1rem,6vw,4.5rem)] font-bold hover:underline transition-colors break-all"
-          >> {{ $email }}</a
-        >
-      </div>
-    </div>
-  </section>
+<section id="top" class="io" data-hero style="position: relative; max-width: 1360px; margin: 0 auto; box-sizing: border-box; padding: 52px clamp(16px, 3vw, 40px) 64px">
+<div style="display: flex; gap: 40px; font-size: 11px; line-height: 14px; margin-bottom: 20px"><span class="b" data-scr>Index of work 2026</span><span class="hud" data-scr>Projects, experiments, writings</span><span class="hud or b">Sheet <span data-hno>01</span> / 03</span></div>
+<div style="display: flex; flex-wrap: wrap; gap: 28px; align-items: stretch">
+<div class="panel wipe hero-p" style="flex: 1 1 560px; height: min(480px, 64vw)">
+<span class="cn" aria-hidden="true" style="left: 22px; top: 22px; border-right: 0; border-bottom: 0"></span>
+<span class="cn" aria-hidden="true" style="right: 22px; top: 22px; border-left: 0; border-bottom: 0"></span>
+<div class="who" style="position: absolute; left: 62px; top: 24px; font-size: 11px; line-height: 15px; font-weight: 700"><div data-scr>Software engineer</div><div data-scr>Technical lead</div><div data-scr>Europe, remote</div></div>
+<h1 aria-label="Oleg Pustovit" style="margin: 0; position: absolute; left: 18px; bottom: 26px; display: flex; flex-direction: column; gap: 0.2em; font-weight: 900; font-size: min(156px, 11.2vw); line-height: 0.74; letter-spacing: -0.045em; color: #f4f3ee"><span class="sl" role="img" aria-label="Oleg" style=""><span aria-hidden="true" style="visibility: hidden">Oleg</span><span class="bd" aria-hidden="true" style="clip-path: inset(-60.00% -8% 75.00% -8%); --d: 26px; --from: -240px; animation-delay: 0.10s, 2.5s; animation-duration: 1.2s, 7s">Oleg</span><span class="bd" aria-hidden="true" style="clip-path: inset(24.75% -8% 50.00% -8%); --d: -18px; --from: 240px; animation-delay: 0.18s, 3.8s; animation-duration: 1.2s, 10s">Oleg</span><span class="bd" aria-hidden="true" style="clip-path: inset(49.75% -8% 25.00% -8%); --d: 40px; --from: -240px; animation-delay: 0.26s, 5.1s; animation-duration: 1.2s, 7s">Oleg</span><span class="bd" aria-hidden="true" style="clip-path: inset(74.75% -8% -60.00% -8%); --d: -30px; --from: 240px; animation-delay: 0.34s, 6.4s; animation-duration: 1.2s, 10s">Oleg</span></span><span class="sl" role="img" aria-label="Pustovit" style=""><span aria-hidden="true" style="visibility: hidden">Pustovit</span><span class="bd" aria-hidden="true" style="clip-path: inset(-60.00% -8% 80.00% -8%); --d: 26px; --from: -240px; animation-delay: 0.10s, 2.5s; animation-duration: 1.2s, 7s">Pustovit</span><span class="bd" aria-hidden="true" style="clip-path: inset(19.75% -8% 60.00% -8%); --d: -18px; --from: 240px; animation-delay: 0.18s, 3.8s; animation-duration: 1.2s, 10s">Pustovit</span><span class="bd" aria-hidden="true" style="clip-path: inset(39.75% -8% 40.00% -8%); --d: 40px; --from: -240px; animation-delay: 0.26s, 5.1s; animation-duration: 1.2s, 7s">Pustovit</span><span class="bd" aria-hidden="true" style="clip-path: inset(59.75% -8% 20.00% -8%); --d: -30px; --from: 240px; animation-delay: 0.34s, 6.4s; animation-duration: 1.2s, 10s">Pustovit</span><span class="bd" aria-hidden="true" style="clip-path: inset(79.75% -8% -60.00% -8%); --d: 14px; --from: -240px; animation-delay: 0.42s, 7.7s; animation-duration: 1.2s, 7s">Pustovit</span></span></h1>
+<span class="sweep" aria-hidden="true"></span>
 </div>
-{{end}}
+<div style="flex: 1 1 380px; display: flex; flex-direction: column">
+<nav aria-label="Index" style="display: flex; flex-direction: column; border-top: 3px solid #1c1c1c">
+<button type="button" class="hrow rise" data-hrow data-on="goP" style="animation-delay: .5s"><span class="ix">01</span><span class="pl" aria-hidden="true"></span><span class="nm">Projects</span><span class="n b">06</span></button>
+<button type="button" class="hrow rise" data-hrow data-on="goE" style="animation-delay: .62s"><span class="ix">02</span><span class="pl" aria-hidden="true"></span><span class="nm">Experiments</span><span class="n b">03</span></button>
+<button type="button" class="hrow rise" data-hrow data-on="goW" style="animation-delay: .74s"><span class="ix">03</span><span class="pl" aria-hidden="true"></span><span class="nm">Writings</span><span class="n b">{{ $nw }}</span></button>
+</nav>
+<p class="rise" style="margin: 22px 0 22px; max-width: 400px; font-size: 15px; line-height: 1.38; animation-delay: .9s">I build products with early-stage startups, and my own tools in the open. This sheet holds the projects, the experiments and the writing.</p>
+<div class="wipe" style="position: relative; flex: 1 1 110px; min-height: 110px; box-shadow: 0 0 0 1px #1c1c1c; animation-delay: 1s"><canvas data-hgen aria-hidden="true" style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; display: block"></canvas></div>
+</div>
+</div>
+<div class="rise" style="position: relative; margin-top: 28px; animation-delay: 1.1s">
+<div style="position: relative; height: 2px; background: #1c1c1c"><span data-phb aria-hidden="true" style="position: absolute; left: 0; top: -2px; height: 6px; width: 100%; background: #f26522; transform-origin: left; transform: scaleX(0)"></span></div>
+<div style="display: flex; justify-content: space-between; padding-top: 10px; font-size: 11px; font-variant-numeric: tabular-nums"><span class="b hud" data-tc>00:00:00:00</span><span class="b">Scroll ↓</span></div>
+</div>
+</section>
+
+<div style="position: relative; max-width: 1360px; margin: 0 auto; box-sizing: border-box; padding: 0 clamp(16px, 3vw, 40px); display: flex; gap: 28px; align-items: flex-start">
+
+<div class="rail" aria-hidden="true" style="position: sticky; top: 49px; flex: 0 0 52px; height: 640px; display: flex; gap: 10px; padding-top: 36px; box-sizing: border-box">
+<div style="position: relative; flex: 0 0 12px; background: #d6d5cf"><div data-fill style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; background: #f26522; transform-origin: top; transform: scaleY(0)"></div></div>
+<div style="flex: 1 1 auto; display: flex; flex-direction: column; justify-content: space-between; align-items: flex-start">
+<div class="vt sp b" style="font-size: 10px">Index of work 2026</div>
+<div class="vt or" style="font-size: 10px; font-weight: 700; letter-spacing: .12em">Oleg Pustovit</div>
+</div>
+</div>
+
+<div style="flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column">
+
+<div style="height: 36px"></div>
+
+<section id="projects" data-sec="projects" style="scroll-margin-top: 49px; padding-bottom: 150px">
+<div class="io shd" style="display: flex; align-items: stretch; gap: 0; margin-bottom: 56px">
+<div class="panel wipe" style="flex: 0 1 420px; height: 210px">
+<span class="cn" aria-hidden="true" style="left: 110px; top: 22px; border-right: 0; border-bottom: 0"></span>
+<span class="cn" aria-hidden="true" style="right: 22px; bottom: 22px; border-left: 0; border-top: 0"></span>
+<span class="dash" aria-hidden="true"></span>
+<div style="position: absolute; left: 22px; top: 22px; bottom: 22px; display: flex; flex-direction: column; justify-content: space-between; font-size: 11px; font-weight: 700"><span>- 01</span><span>- 02</span><span>- 03</span><span>- 04</span></div>
+<div data-par="0.06" style="position: absolute; right: 30px; bottom: 14px; font-weight: 900; font-size: 190px; line-height: 0.72; letter-spacing: -0.05em"><span class="sl" role="img" aria-label="01" style=""><span aria-hidden="true" style="visibility: hidden">01</span><span class="bd" aria-hidden="true" style="clip-path: inset(-60.00% -8% 80.00% -8%); --d: 26px; --from: -90px; animation-delay: 0.10s, 2.5s; animation-duration: 1.2s, 7s">01</span><span class="bd" aria-hidden="true" style="clip-path: inset(19.75% -8% 60.00% -8%); --d: -18px; --from: 90px; animation-delay: 0.18s, 3.8s; animation-duration: 1.2s, 10s">01</span><span class="bd" aria-hidden="true" style="clip-path: inset(39.75% -8% 40.00% -8%); --d: 40px; --from: -90px; animation-delay: 0.26s, 5.1s; animation-duration: 1.2s, 7s">01</span><span class="bd" aria-hidden="true" style="clip-path: inset(59.75% -8% 20.00% -8%); --d: -30px; --from: 90px; animation-delay: 0.34s, 6.4s; animation-duration: 1.2s, 10s">01</span><span class="bd" aria-hidden="true" style="clip-path: inset(79.75% -8% -60.00% -8%); --d: 14px; --from: -90px; animation-delay: 0.42s, 7.7s; animation-duration: 1.2s, 7s">01</span></span></div>
+<span class="sweep" aria-hidden="true"></span>
+</div>
+<div class="shd-t" style="flex: 1 1 200px; display: flex; flex-direction: column; justify-content: flex-end; padding: 0 0 0 28px; border-bottom: 2px solid #1c1c1c">
+<div class="rise" style="display: flex; align-items: baseline; gap: 18px; animation-delay: .2s"><h2 class="sp b" data-scr style="margin: 0; font-size: 13px">Projects</h2><span class="n">06</span></div>
+<p class="rise" style="margin: 8px 0 14px; max-width: 300px; animation-delay: .3s">Tools I use every day, built in the open where I can.</p>
+</div>
+</div>
+
+{{ partial "home/projects.html" . }}
+
+</section>
+<div class="mqw" aria-hidden="true"><div data-mq><span>Experiments</span><span class="or">■</span><span>03 pieces</span><span class="or">■</span><span>Small things built to learn something</span><span class="or">■</span><span>Experiments</span><span class="or">■</span><span>03 pieces</span><span class="or">■</span><span>Small things built to learn something</span><span class="or">■</span><span>Experiments</span><span class="or">■</span><span>03 pieces</span><span class="or">■</span><span>Small things built to learn something</span><span class="or">■</span><span>Experiments</span><span class="or">■</span><span>03 pieces</span><span class="or">■</span><span>Small things built to learn something</span><span class="or">■</span><span>Experiments</span><span class="or">■</span><span>03 pieces</span><span class="or">■</span><span>Small things built to learn something</span><span class="or">■</span><span>Experiments</span><span class="or">■</span><span>03 pieces</span><span class="or">■</span><span>Small things built to learn something</span><span class="or">■</span></div></div>
+<section id="experiments" data-sec="experiments" style="scroll-margin-top: 49px; padding-bottom: 150px">
+<div class="io shd" style="display: flex; align-items: stretch; gap: 0; margin-bottom: 56px">
+<div class="panel wipe" style="flex: 0 1 420px; height: 210px">
+<span class="cn" aria-hidden="true" style="left: 110px; top: 22px; border-right: 0; border-bottom: 0"></span>
+<span class="cn" aria-hidden="true" style="right: 22px; bottom: 22px; border-left: 0; border-top: 0"></span>
+<span class="dash" aria-hidden="true"></span>
+<div style="position: absolute; left: 22px; top: 22px; bottom: 22px; display: flex; flex-direction: column; justify-content: space-between; font-size: 11px; font-weight: 700"><span>- 01</span><span>- 02</span><span>- 03</span><span>- 04</span></div>
+<div data-par="0.06" style="position: absolute; right: 30px; bottom: 14px; font-weight: 900; font-size: 190px; line-height: 0.72; letter-spacing: -0.05em"><span class="sl" role="img" aria-label="02" style=""><span aria-hidden="true" style="visibility: hidden">02</span><span class="bd" aria-hidden="true" style="clip-path: inset(-60.00% -8% 80.00% -8%); --d: 26px; --from: -90px; animation-delay: 0.10s, 2.5s; animation-duration: 1.2s, 7s">02</span><span class="bd" aria-hidden="true" style="clip-path: inset(19.75% -8% 60.00% -8%); --d: -18px; --from: 90px; animation-delay: 0.18s, 3.8s; animation-duration: 1.2s, 10s">02</span><span class="bd" aria-hidden="true" style="clip-path: inset(39.75% -8% 40.00% -8%); --d: 40px; --from: -90px; animation-delay: 0.26s, 5.1s; animation-duration: 1.2s, 7s">02</span><span class="bd" aria-hidden="true" style="clip-path: inset(59.75% -8% 20.00% -8%); --d: -30px; --from: 90px; animation-delay: 0.34s, 6.4s; animation-duration: 1.2s, 10s">02</span><span class="bd" aria-hidden="true" style="clip-path: inset(79.75% -8% -60.00% -8%); --d: 14px; --from: -90px; animation-delay: 0.42s, 7.7s; animation-duration: 1.2s, 7s">02</span></span></div>
+<span class="sweep" aria-hidden="true"></span>
+</div>
+<div class="shd-t" style="flex: 1 1 200px; display: flex; flex-direction: column; justify-content: flex-end; padding: 0 0 0 28px; border-bottom: 2px solid #1c1c1c">
+<div class="rise" style="display: flex; align-items: baseline; gap: 18px; animation-delay: .2s"><h2 class="sp b" data-scr style="margin: 0; font-size: 13px">Experiments</h2><span class="n">03</span></div>
+<p class="rise" style="margin: 8px 0 14px; max-width: 300px; animation-delay: .3s">Small things built to learn something.</p>
+</div>
+</div>
+
+{{ partial "home/experiments.html" . }}
+
+</section>
+<div class="mqw" aria-hidden="true"><div data-mq><span>Writings</span><span class="or">■</span><span>{{ $nw }} pieces</span><span class="or">■</span><span>{{ $y0 }} to {{ $y1 }}</span><span class="or">■</span><span>Writings</span><span class="or">■</span><span>{{ $nw }} pieces</span><span class="or">■</span><span>{{ $y0 }} to {{ $y1 }}</span><span class="or">■</span><span>Writings</span><span class="or">■</span><span>{{ $nw }} pieces</span><span class="or">■</span><span>{{ $y0 }} to {{ $y1 }}</span><span class="or">■</span><span>Writings</span><span class="or">■</span><span>{{ $nw }} pieces</span><span class="or">■</span><span>{{ $y0 }} to {{ $y1 }}</span><span class="or">■</span><span>Writings</span><span class="or">■</span><span>{{ $nw }} pieces</span><span class="or">■</span><span>{{ $y0 }} to {{ $y1 }}</span><span class="or">■</span><span>Writings</span><span class="or">■</span><span>{{ $nw }} pieces</span><span class="or">■</span><span>{{ $y0 }} to {{ $y1 }}</span><span class="or">■</span></div></div>
+<section id="writings" data-sec="writings" style="scroll-margin-top: 49px; padding-bottom: 150px">
+<div class="io shd" style="display: flex; align-items: stretch; gap: 0; margin-bottom: 56px">
+<div class="panel wipe" style="flex: 0 1 420px; height: 210px">
+<span class="cn" aria-hidden="true" style="left: 110px; top: 22px; border-right: 0; border-bottom: 0"></span>
+<span class="cn" aria-hidden="true" style="right: 22px; bottom: 22px; border-left: 0; border-top: 0"></span>
+<span class="dash" aria-hidden="true"></span>
+<div style="position: absolute; left: 22px; top: 22px; bottom: 22px; display: flex; flex-direction: column; justify-content: space-between; font-size: 11px; font-weight: 700"><span>- 01</span><span>- 02</span><span>- 03</span><span>- 04</span></div>
+<div data-par="0.06" style="position: absolute; right: 30px; bottom: 14px; font-weight: 900; font-size: 190px; line-height: 0.72; letter-spacing: -0.05em"><span class="sl" role="img" aria-label="03" style=""><span aria-hidden="true" style="visibility: hidden">03</span><span class="bd" aria-hidden="true" style="clip-path: inset(-60.00% -8% 80.00% -8%); --d: 26px; --from: -90px; animation-delay: 0.10s, 2.5s; animation-duration: 1.2s, 7s">03</span><span class="bd" aria-hidden="true" style="clip-path: inset(19.75% -8% 60.00% -8%); --d: -18px; --from: 90px; animation-delay: 0.18s, 3.8s; animation-duration: 1.2s, 10s">03</span><span class="bd" aria-hidden="true" style="clip-path: inset(39.75% -8% 40.00% -8%); --d: 40px; --from: -90px; animation-delay: 0.26s, 5.1s; animation-duration: 1.2s, 7s">03</span><span class="bd" aria-hidden="true" style="clip-path: inset(59.75% -8% 20.00% -8%); --d: -30px; --from: 90px; animation-delay: 0.34s, 6.4s; animation-duration: 1.2s, 10s">03</span><span class="bd" aria-hidden="true" style="clip-path: inset(79.75% -8% -60.00% -8%); --d: 14px; --from: -90px; animation-delay: 0.42s, 7.7s; animation-duration: 1.2s, 7s">03</span></span></div>
+<span class="sweep" aria-hidden="true"></span>
+</div>
+<div class="shd-t" style="flex: 1 1 200px; display: flex; flex-direction: column; justify-content: flex-end; padding: 0 0 0 28px; border-bottom: 2px solid #1c1c1c">
+<div class="rise" style="display: flex; align-items: baseline; gap: 18px; animation-delay: .2s"><h2 class="sp b" data-scr style="margin: 0; font-size: 13px">Writings</h2><span class="n">{{ $nw }}</span></div>
+<p class="rise" style="margin: 8px 0 14px; max-width: 300px; animation-delay: .3s">Long-form notes from building products with small teams.</p>
+</div>
+</div>
+
+{{ partial "sheet/writings.html" . }}
+
+</section>
+<div class="mqw" aria-hidden="true"><div data-mq><span>Contact</span><span class="or">■</span><span>oleg@olegpustovit.com</span><span class="or">■</span><span>Newsletter</span><span class="or">■</span><span>Contact</span><span class="or">■</span><span>oleg@olegpustovit.com</span><span class="or">■</span><span>Newsletter</span><span class="or">■</span><span>Contact</span><span class="or">■</span><span>oleg@olegpustovit.com</span><span class="or">■</span><span>Newsletter</span><span class="or">■</span><span>Contact</span><span class="or">■</span><span>oleg@olegpustovit.com</span><span class="or">■</span><span>Newsletter</span><span class="or">■</span><span>Contact</span><span class="or">■</span><span>oleg@olegpustovit.com</span><span class="or">■</span><span>Newsletter</span><span class="or">■</span><span>Contact</span><span class="or">■</span><span>oleg@olegpustovit.com</span><span class="or">■</span><span>Newsletter</span><span class="or">■</span></div></div>
+<section id="contact" data-sec="contact" style="scroll-margin-top: 49px; padding-bottom: 150px">
+<div class="io shd" style="display: flex; align-items: stretch; gap: 0; margin-bottom: 56px">
+<div class="panel wipe" style="flex: 0 1 420px; height: 210px">
+<span class="cn" aria-hidden="true" style="left: 110px; top: 22px; border-right: 0; border-bottom: 0"></span>
+<span class="cn" aria-hidden="true" style="right: 22px; bottom: 22px; border-left: 0; border-top: 0"></span>
+<span class="dash" aria-hidden="true"></span>
+<div style="position: absolute; left: 22px; top: 22px; bottom: 22px; display: flex; flex-direction: column; justify-content: space-between; font-size: 11px; font-weight: 700"><span>- 01</span><span>- 02</span><span>- 03</span><span>- 04</span></div>
+<div data-par="0.06" style="position: absolute; right: 30px; bottom: 14px; font-weight: 900; font-size: 190px; line-height: 0.72; letter-spacing: -0.05em"><span class="sl" role="img" aria-label="04" style=""><span aria-hidden="true" style="visibility: hidden">04</span><span class="bd" aria-hidden="true" style="clip-path: inset(-60.00% -8% 80.00% -8%); --d: 26px; --from: -90px; animation-delay: 0.10s, 2.5s; animation-duration: 1.2s, 7s">04</span><span class="bd" aria-hidden="true" style="clip-path: inset(19.75% -8% 60.00% -8%); --d: -18px; --from: 90px; animation-delay: 0.18s, 3.8s; animation-duration: 1.2s, 10s">04</span><span class="bd" aria-hidden="true" style="clip-path: inset(39.75% -8% 40.00% -8%); --d: 40px; --from: -90px; animation-delay: 0.26s, 5.1s; animation-duration: 1.2s, 7s">04</span><span class="bd" aria-hidden="true" style="clip-path: inset(59.75% -8% 20.00% -8%); --d: -30px; --from: 90px; animation-delay: 0.34s, 6.4s; animation-duration: 1.2s, 10s">04</span><span class="bd" aria-hidden="true" style="clip-path: inset(79.75% -8% -60.00% -8%); --d: 14px; --from: -90px; animation-delay: 0.42s, 7.7s; animation-duration: 1.2s, 7s">04</span></span></div>
+<span class="sweep" aria-hidden="true"></span>
+</div>
+<div class="shd-t" style="flex: 1 1 200px; display: flex; flex-direction: column; justify-content: flex-end; padding: 0 0 0 28px; border-bottom: 2px solid #1c1c1c">
+<div class="rise" style="display: flex; align-items: baseline; gap: 18px; animation-delay: .2s"><h2 class="sp b" data-scr style="margin: 0; font-size: 13px">Contact</h2><span class="n">06</span></div>
+<p class="rise" style="margin: 8px 0 14px; max-width: 300px; animation-delay: .3s">Email, profiles and the newsletter.</p>
+</div>
+</div>
+{{ partial "sheet/contact.html" . }}
+</section>
+
+{{ partial "sheet/footer.html" . }}
+</div>
+
+<aside class="spine" aria-hidden="true" style="position: sticky; top: 49px; flex: 0 0 264px; display: flex; flex-direction: column; gap: 8px; padding-top: 36px">
+<div style="display: flex; justify-content: space-between; font-size: 10px"><span class="b">Plate <span data-secno>0</span></span><span data-mode>Automaton</span></div>
+<div style="position: relative; height: 560px; box-shadow: 0 0 0 1px #1c1c1c">
+<canvas data-gen="spine" style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; display: block"></canvas>
+</div>
+<div style="display: flex; flex-direction: column"><span class="tick" data-tick="projects"><i></i>01</span><span class="tick" data-tick="experiments"><i></i>02</span><span class="tick" data-tick="writings"><i></i>03</span><span class="tick" data-tick="contact"><i></i>04</span></div>
+</aside>
+
+</div>
+<canvas data-wipe aria-hidden="true" width="1" height="1" style="position: fixed; left: 0; top: 0; width: 100%; height: 100%; z-index: 50; pointer-events: none"></canvas>
+</div>
+{{ end }}

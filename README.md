@@ -1,30 +1,17 @@
-# oleg pustovit — Personal Website
+# Oleg Pustovit — personal website
 
-A fast, modern personal site powered by [Hugo](https://gohugo.io/), styled with [Tailwind CSS](https://tailwindcss.com/), and animated with [GSAP](https://greensock.com/gsap/). Built with performance, clarity, and a touch of unnecessary flair.
+Source of [olegpustovit.com](https://olegpustovit.com): projects, experiments and writing on one index sheet. Built with [Hugo](https://gohugo.io/); styles, generative plates and transitions are plain CSS and canvas JavaScript from the design (`assets/sheet/`).
 
 ---
 
-## 🔧 Features
+## Features
 
-### 🚀 **Modern Tech Stack**
-
-- **Hugo** — Blazing-fast static site generator
-- **Tailwind CSS** — Utility-first styling, clean and scalable
-- **GSAP** — High-performance animation engine
-- **Bun / Nix** — Because speed and reproducibility matter
-
-### ✨ **Dynamic UI**
-
-- Terminal-style typing animation
-- Parallax scrolling + smooth scroll behavior
-- Full dark mode support
-- Animated tech stack visualization
-
-### 📱 **Responsive by Default**
-
-- Mobile-first layout approach
-- Adaptive components across screen sizes
-- Optimized build pipeline for performance-critical delivery
+- Swiss typographic sheet: Hanken Grotesk and Pragmasevka, paper, ink and one orange
+- Generative plates drawn in the browser (hero, spine, map of each piece)
+- Seven wipe transitions, in-page and between pages; motion turns off under reduced motion
+- Posts: numbered sections, contents rail, clickable map of the piece, code figures with a stepped reveal, terminal recordings (asciinema)
+- Layouts from 320 px phones to wide desktops
+- UI kit of every component at `/ui-kit/`
 
 ---
 
@@ -99,8 +86,8 @@ Adjust global settings:
 
 ### Styling & Animations
 
-- Extend Tailwind styles in `assets/css/`
-- Modify or add custom GSAP scripts in `assets/js/`
+- Styles live in `assets/sheet/` (`sheet.css` from the design, `site.css` for site additions)
+- Motion and canvas art live in `assets/sheet/component.js`
 
 ---
 
@@ -133,7 +120,6 @@ MIT — do what you want, just don't break the internet.
 ## 🧠 Acknowledgments
 
 - [Hugo](https://gohugo.io/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [GSAP](https://greensock.com/gsap/)
-- [Alpine.js](https://alpinejs.dev/)
+- [asciinema-player](https://github.com/asciinema/asciinema-player)
+- [Pragmasevka](https://github.com/shytikov/pragmasevka)
 - [Nix](https://nixos.org/) — seriously underrated

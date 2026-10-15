@@ -1,0 +1,30 @@
+/* UI kit board only. */
+.kit{max-width:1360px;margin:0 auto;box-sizing:border-box;padding:0 40px 120px}
+.ks{padding-top:90px}
+.kh{display:flex;align-items:baseline;gap:22px;border-top:3px solid #1c1c1c;padding-top:14px;margin-bottom:36px}
+.kh .hn{transform:none;font-size:12px}
+.kh h2{margin:0;font-size:13px}
+.kh .n{margin-left:auto;font-size:12px}
+.kg{display:grid;gap:28px}
+.cap{font-size:11px;color:#6b6a66;margin-top:10px;line-height:1.4}
+.cap b{color:#1c1c1c}
+.sw{display:flex;flex-direction:column;gap:8px;font-size:12px}
+.sw i{display:block;height:84px;box-shadow:inset 0 0 0 1px #1c1c1c}
+.tr-row{display:flex;align-items:baseline;gap:24px;padding:14px 0;border-bottom:1px solid #b9b8b2}
+.tr-row .lab{flex:0 0 190px;font-size:11px;color:#6b6a66;line-height:1.35}
+.tr-row .lab b{display:block;color:#1c1c1c;font-size:12px}
+.st-lab{font-size:11px;font-weight:700;margin-bottom:10px;display:flex;gap:8px;align-items:center}
+.st-lab i{width:7px;height:7px;background:#f26522;display:block}
+.srow.is-h{padding-left:12px}.srow.is-h .pl{flex-basis:30px}.srow.is-h .go{transform:translateX(8px)}
+.chip.is-h i{background:#f26522}
+.nl .sub.is-h{background:#f26522}
+.nl .fld.is-f{border-color:#f26522}
+.is-fv{outline:2px solid #f26522;outline-offset:3px}
+.mail.is-h{color:#f26522}
+.post a.is-h{color:#f26522}
+.tbl tr.is-h td{background:#e1e0da}
+.plate.is-h .bar{transform:scaleX(1)}.plate.is-h .sp{letter-spacing:.7em}.plate.is-h .go,.row.is-h .go{transform:translateX(10px)}
+.navb.is-h i{width:7px;background:#1c1c1c}
+.kit .post p{max-width:none}
+.dont{position:relative;padding:18px 20px;box-shadow:inset 0 0 0 1px #b9b8b2}
+.dont::after{content:'';position:absolute;left:0;right:0;top:50%;height:2px;background:#d0311d;transform:none;opacity:.8}

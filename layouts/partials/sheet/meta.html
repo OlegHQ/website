@@ -1,0 +1,44 @@
+{{- /* Open Graph, Twitter/X card and JSON-LD. Context: dict "page" "desc". */ -}}
+{{- $p := .page }}{{ $desc := .desc -}}
+{{- $title := cond $p.IsHome site.Title (cond (eq $p.Kind "404") "Not found" ($p.Title | default site.Title)) | plainify -}}
+{{- $isPost := and $p.IsPage (eq $p.Section "posts") -}}
+{{- $card := partial "sheet/og-image.html" $p -}}
+{{- $alt := cond $isPost (printf "%s. A piece by %s." $title site.Params.author) (printf "%s: %s" site.Title site.Params.description) -}}
+<meta property="og:site_name" content="{{ site.Title }}">
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="{{ cond $isPost "article" "website" }}">
+<meta property="og:url" content="{{ $p.Permalink }}">
+<meta property="og:title" content="{{ $title }}">
+<meta property="og:description" content="{{ $desc }}">
+<meta property="og:image" content="{{ $card.Permalink }}">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="{{ $card.Width }}">
+<meta property="og:image:height" content="{{ $card.Height }}">
+<meta property="og:image:alt" content="{{ $alt }}">
+{{- if $isPost }}
+<meta property="article:published_time" content="{{ $p.Date.Format "2006-01-02T15:04:05Z07:00" }}">
+<meta property="article:modified_time" content="{{ $p.Lastmod.Format "2006-01-02T15:04:05Z07:00" }}">
+<meta property="article:author" content="{{ site.Params.author }}">
+{{- range $p.Params.tags }}
+<meta property="article:tag" content="{{ . }}">
+{{- end }}
+{{- end }}
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@olegpustovit">
+<meta name="twitter:creator" content="@olegpustovit">
+<meta name="twitter:title" content="{{ $title }}">
+<meta name="twitter:description" content="{{ $desc }}">
+<meta name="twitter:image" content="{{ $card.Permalink }}">
+<meta name="twitter:image:alt" content="{{ $alt }}">
+{{- $person := dict "@type" "Person" "name" site.Params.author "url" site.Home.Permalink "sameAs" (slice "https://github.com/OlegHQ" "https://x.com/olegpustovit" "https://www.linkedin.com/in/opustovit/" "https://bsky.app/profile/olegpustovit.com" "https://olegpustovit.substack.com/") -}}
+{{- $ld := dict -}}
+{{- if $p.IsHome -}}
+  {{- $ld = dict "@context" "https://schema.org" "@graph" (slice
+      (dict "@type" "WebSite" "@id" (print site.Home.Permalink "#website") "url" site.Home.Permalink "name" site.Title "description" site.Params.description "inLanguage" "en-US" "publisher" (dict "@id" (print site.Home.Permalink "#person")))
+      (merge $person (dict "@id" (print site.Home.Permalink "#person") "image" $card.Permalink))) -}}
+{{- else if $isPost -}}
+  {{- $ld = dict "@context" "https://schema.org" "@type" "BlogPosting" "headline" $title "description" $desc "url" $p.Permalink "mainEntityOfPage" $p.Permalink "image" (slice $card.Permalink) "datePublished" ($p.Date.Format "2006-01-02T15:04:05Z07:00") "dateModified" ($p.Lastmod.Format "2006-01-02T15:04:05Z07:00") "author" $person "publisher" $person "inLanguage" "en-US" "keywords" (delimit ($p.Params.tags | default slice) ", ") "wordCount" $p.WordCount -}}
+{{- end -}}
+{{- with $ld }}
+<script type="application/ld+json">{{ jsonify . | safeJS }}</script>
+{{- end }}

@@ -3,10 +3,8 @@
   "module": "index.ts",
   "type": "module",
   "devDependencies": {
-    "@tailwindcss/cli": "^4.1.4",
     "@types/bun": "latest",
-    "nodemon": "^3.1.10",
-    "tailwindcss": "^4.1.4"
+    "nodemon": "^3.1.10"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
