@@ -11,7 +11,7 @@
 {{- range findRE `(?s)<figure>\s*<img[^>]*>\s*(?:<figcaption>.*?</figcaption>)?\s*</figure>` $c -}}
   {{- $src := index (index (findRESubmatch `src="([^"]+)"` . 1) 0) 1 -}}
   {{- $alt := "" }}{{ with findRESubmatch `alt="([^"]*)"` . 1 }}{{ $alt = index (index . 0) 1 | htmlUnescape }}{{ end -}}
-  {{- $cap := "" }}{{ with findRESubmatch `(?s)<figcaption>(.*?)</figcaption>` . 1 }}{{ $cap = index (index . 0) 1 | strings.TrimSpace | safeHTML }}{{ end -}}
+  {{- $cap := "" }}{{ with findRESubmatch `(?s)<figcaption>(.*?)</figcaption>` . 1 }}{{ $cap = index (index . 0) 1 | strings.TrimSpace | $.RenderString }}{{ end -}}
   {{- $c = replace $c . (partial "sheet/figure.html" (dict "page" $ "src" (htmlUnescape $src) "alt" $alt "caption" $cap)) 1 -}}
 {{- end -}}
 {{- $c = partial "sheet/number.html" (dict "html" $c "mark" "<!--fig-->" "slot" "<!--fign-->") -}}

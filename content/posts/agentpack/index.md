@@ -101,8 +101,10 @@ The way `agentpack` works is shown on the following diagram:
 
 <figure>
   <img src="agentpack-flow.svg" alt="Diagram showing agentpack resolving one manifest into a lockfile, shared cache, per-harness staging directories, and agent launchers">
-  <figcaption>The only state I want to keep is the manifest and lockfile; the harness-specific files should be cheap to throw away and regenerate.</figcaption>
+  <figcaption>agentpack resolves one manifest into a lockfile, a shared cache, per-harness staging directories and agent launchers.</figcaption>
 </figure>
+
+The only state I want to keep is the manifest and lockfile; the harness-specific files should be cheap to throw away and regenerate.
 
 
 
@@ -138,8 +140,10 @@ agentpack sync
 
 <figure>
   <img src="github-staging.svg" alt="Diagram showing a GitHub package URL resolved into the agentpack cache and generated staged outputs without committing harness folders to the project">
-  <figcaption>The important distinction is the install target: GitHub is only the source, while `$STAGING` is what the agent CLI reads.</figcaption>
+  <figcaption>A GitHub package URL is resolved into the agentpack cache and generated staged outputs, without committing harness folders to the project.</figcaption>
 </figure>
+
+The important distinction is the install target: GitHub is only the source, while `$STAGING` is what the agent CLI reads.
 
 When packages are downloaded from remote sources, you need to trust those sources, just like running `npm install` or executing a bash script downloaded via `curl`. To mitigate [supply chain attacks](https://en.wikipedia.org/wiki/Supply_chain_attack) the exact versions are pinned in `pack.lock` to the latest commit at the time the package was added. You should still review what gets pulled into your staging environment.
 
@@ -179,18 +183,19 @@ To keep things easy to configure, I created a simple TUI, where modes can be def
 
 ### Hooks as an intermediate representation
 
-<figure>
-  <img src="hooks-ir.svg" alt="Diagram showing Claude hooks parsed into agentpack hook IR and rendered to Cursor, OpenCode, and Codex hook surfaces">
-</figure>
-
 For hooks emulation, I chose to **base the configuration on [Claude Code’s hook model](https://code.claude.com/docs/en/hooks)**: lifecycle events (PreToolUse, PostToolUse, UserPromptSubmit, Stop, etc.) and tool matchers such as `Edit` and `Grep`. Other CLIs support fewer events and handler types. 
 
 Hook definitions are processed through four stages:
 
-1. **Collect**. agentpack finds and collects all `hooks.json` files from four layers: the user-wide `~/.<harness>/hooks.json`, a plugin folder's `hooks.json`, hooks specific to a `SKILL.md` folder, and the project-specific `.agents/hooks/hooks.json`. All of them are parsed into a normalized form and merged with a stable sort. 
-2. **Intermediate representation**. The merged hook definitions are normalized into a typed model that has a lifecycle event (`PreToolUse`, `PostToolUse`, ...), an optional tool-name matcher (e.g. `Edit`, which fires only for the edit tool), and a handler (`Command`, `Http`, `Prompt`, `Agent`).
-3. **Rendering per target**. At this stage a harness-specific hooks configuration file is generated. For unsupported events we find the closest matching event (e.g. `PermissionsRequest` is modeled as `PreToolUse` in Cursor). `Http` or `Agent` handlers are replaced with the `agentpack hook-exec` command for CLIs that support only command execution.
-4. **The runtime shim**. For any emulated event, `agentpack hook-exec` is called. It reads args from stdin, finds the real handler, and forwards the result.
+1. **Collect.** agentpack finds and collects all `hooks.json` files from four layers: the user-wide `~/.<harness>/hooks.json`, a plugin folder's `hooks.json`, hooks specific to a `SKILL.md` folder, and the project-specific `.agents/hooks/hooks.json`. All of them are parsed into a normalized form and merged with a stable sort. 
+2. **Intermediate representation.** The merged hook definitions are normalized into a typed model that has a lifecycle event (`PreToolUse`, `PostToolUse`, ...), an optional tool-name matcher (e.g. `Edit`, which fires only for the edit tool), and a handler (`Command`, `Http`, `Prompt`, `Agent`).
+3. **Rendering per target.** At this stage a harness-specific hooks configuration file is generated. For unsupported events we find the closest matching event (e.g. `PermissionsRequest` is modeled as `PreToolUse` in Cursor). `Http` or `Agent` handlers are replaced with the `agentpack hook-exec` command for CLIs that support only command execution.
+4. **The runtime shim.** For any emulated event, `agentpack hook-exec` is called. It reads args from stdin, finds the real handler, and forwards the result.
+
+<figure>
+  <img src="hooks-ir.svg" alt="Diagram showing Claude hooks parsed into agentpack hook IR and rendered to Cursor, OpenCode, and Codex hook surfaces">
+  <figcaption>Claude hooks are parsed into the agentpack hook IR and rendered to Cursor, OpenCode and Codex hook surfaces.</figcaption>
+</figure>
 
 This setup saves time writing hook configs for each new CLI; it tries its best to execute the config for any supported harness. For example, if you have custom search or retrieval tools and you want to force the agent to use them instead of the default `Grep` or `Read`, agentpack will try its best to make it work for every supported harness. 
 
@@ -210,7 +215,7 @@ As of May 2026, I created the following compatibility matrix. **Harnesses like C
 | Modes | Yes | Yes | Yes | Yes | Filters packages, `.agents`, and MCP servers. |
 | Maturity | Primary | Supported | Supported | Supported | Codex uses more fallbacks. |
 
-In addition to the main CLIs, I added experimental support for Grok and Antigravity CLIs, but due to their limitations I wasn't able to wire up hooks compatibility. 
+In addition to the main CLIs, I added experimental support for Grok and [Antigravity](https://antigravity.google/) CLIs, but due to their limitations I wasn't able to wire up hooks compatibility. 
 
 ### Try it
 
