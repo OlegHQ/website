@@ -86,8 +86,8 @@ Adjust global settings:
 
 ### Styling & Animations
 
-- Extend Tailwind styles in `assets/css/`
-- Modify or add custom GSAP scripts in `assets/js/`
+- Styles live in `assets/sheet/` (`sheet.css` from the design, `site.css` for site additions)
+- Motion and canvas art live in `assets/sheet/component.js`
 
 ---
 
@@ -120,7 +120,6 @@ MIT — do what you want, just don't break the internet.
 ## 🧠 Acknowledgments
 
 - [Hugo](https://gohugo.io/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [GSAP](https://greensock.com/gsap/)
-- [Alpine.js](https://alpinejs.dev/)
+- [asciinema-player](https://github.com/asciinema/asciinema-player)
+- [Pragmasevka](https://github.com/shytikov/pragmasevka)
 - [Nix](https://nixos.org/) — seriously underrated

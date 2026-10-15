@@ -9,7 +9,7 @@ This is Oleg Pustovit's personal site built with Hugo: projects, experiments and
 ## Tech Stack
 
 - **Static Site Generator**: Hugo (extended version 0.145.0+)
-- **Styles and motion**: plain CSS and canvas JS from the design (`assets/sheet/`); Tailwind and GSAP remain only for /hypertweet/
+- **Styles and motion**: plain CSS and canvas JS from the design (`assets/sheet/`); no CSS framework
 - **JavaScript Runtime**: Bun
 - **Package Manager**: Bun (with Nix support)
 - **Deployment**: GitHub Pages (automated via GitHub Actions)
@@ -55,7 +55,6 @@ The site is the "index sheet" design (design canvas: claude.ai artifact 2UvkPxmN
 - Render hooks in `layouts/_default/_markup/`: headings open sections, code blocks become code figures, tables get marks and a legend, block images become figure plates. Small hand-drawn SVGs are inlined and recoloured.
 - Shortcodes: `asciinema`, `asciinema-hero` (front matter `params.asciinema`), `figure`.
 - `layouts/_default/list.html` (/posts/), `single.html` (plain pages), `kit.html` (/ui-kit/, noindex), `layouts/404.html`.
-- `layouts/_default/blank.html` and the old `head.html`/`header.html`/`css.html` partials only serve the standalone /hypertweet/ page.
 
 ### Assets
 - `assets/sheet/sheet.css` and `kit.css`: the design's CSS. `site.css`: additions for the live site.
@@ -83,7 +82,6 @@ The site is the "index sheet" design (design canvas: claude.ai artifact 2UvkPxmN
 
 ### When Modifying JavaScript
 - The sheet runtime is `assets/sheet/{base,component,boot}.js`, concatenated and minified by Hugo (`partials/sheet/scripts.html`)
-- `assets/js/` (GSAP bundle) only serves /hypertweet/
 
 ### When Adding Content
 - Blog posts go in content/posts/ as Markdown files; a leading blockquote becomes the Abstract, ## and ### headings become numbered sections
@@ -91,10 +89,8 @@ The site is the "index sheet" design (design canvas: claude.ai artifact 2UvkPxmN
 - Images for posts should be co-located in the same directory
 
 ### Styling Approach
-- Site styles are in assets/sheet/; Tailwind (assets/css, assets/scss) only for /hypertweet/
+- Site styles are in assets/sheet/
 - Paper #e9e8e3, ink #1c1c1c, one orange #f26522; square corners, no shadows or glow
 
 ### Build Considerations
-- Hugo extended version required for SCSS processing
 - Bun is used for JavaScript dependency management
-- Site uses hugo_stats.json for Tailwind CSS purging
