@@ -30,7 +30,7 @@
 <meta name="twitter:description" content="{{ $desc }}">
 <meta name="twitter:image" content="{{ $card.Permalink }}">
 <meta name="twitter:image:alt" content="{{ $alt }}">
-{{- $person := dict "@type" "Person" "name" site.Params.author "url" site.Home.Permalink "sameAs" (slice "https://github.com/OlegHQ" "https://x.com/olegpustovit" "https://www.linkedin.com/in/opustovit/" "https://bsky.app/profile/olegpustovit.com" "https://olegpustovit.substack.com/") -}}
+{{- $person := dict "@type" "Person" "name" site.Params.author "url" site.Home.Permalink "sameAs" (slice "https://github.com/olegpustovit" "https://x.com/olegpustovit" "https://www.linkedin.com/in/opustovit/" "https://bsky.app/profile/olegpustovit.com" "https://olegpustovit.substack.com/") -}}
 {{- $ld := dict -}}
 {{- if $p.IsHome -}}
   {{- $ld = dict "@context" "https://schema.org" "@graph" (slice

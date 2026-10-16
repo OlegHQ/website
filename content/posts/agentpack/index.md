@@ -29,7 +29,7 @@ tags:
   - developer-tools
 ---
 
-> Modern agents like Claude Code, Codex, Cursor and OpenCode need skills, hooks and MCPs, but they load them differently. I made a tool that creates an ephemeral staging configuration that loads into coding agents without polluting the global user or project configuration. [GitHub Link](https://github.com/OlegHQ/agentpack)
+> Modern agents like Claude Code, Codex, Cursor and OpenCode need skills, hooks and MCPs, but they load them differently. I made a tool that creates an ephemeral staging configuration that loads into coding agents without polluting the global user or project configuration. [GitHub Link](https://github.com/olegpustovit/agentpack)
 
 {{< asciinema-hero >}}
 
@@ -225,11 +225,11 @@ agentpack add github.com/anthropics/skills/skills/canvas-design
 agentpack claude 
 ```
 
-`agentpack` is a tool that grew from initially pre-defined nix home-manager configuration where I had custom aliases for Claude that included skills specific to different tech stacks by injecting a custom config through `--plugin-dir` argument. I rely on it every day while working with three or four agent CLIs at the same time. **It's the only package manager that stays out of my way, and it can pre-configure agents through *context-aware* modes.** If you happen to work on different projects and use multiple coding CLIs, **I think it will save you from the same mess it saved me from**. Contributions, issues, and ideas are welcome on [GitHub](https://github.com/OlegHQ/agentpack).
+`agentpack` is a tool that grew from initially pre-defined nix home-manager configuration where I had custom aliases for Claude that included skills specific to different tech stacks by injecting a custom config through `--plugin-dir` argument. I rely on it every day while working with three or four agent CLIs at the same time. **It's the only package manager that stays out of my way, and it can pre-configure agents through *context-aware* modes.** If you happen to work on different projects and use multiple coding CLIs, **I think it will save you from the same mess it saved me from**. Contributions, issues, and ideas are welcome on [GitHub](https://github.com/olegpustovit/agentpack).
 
 ## References
 
-- [agentpack](https://github.com/OlegHQ/agentpack) — the tool described in this post
+- [agentpack](https://github.com/olegpustovit/agentpack) — the tool described in this post
 - [AGENTS.md](https://agents.md) — cross-tool instruction file standard
 - [SKILL.md convention](https://agentskills.io/home) — emerging skills format
 - [Model Context Protocol (MCP)](https://www.anthropic.com/news/model-context-protocol) — Anthropic's announcement

@@ -36,7 +36,7 @@ Source of [olegpustovit.com](https://olegpustovit.com): projects, experiments an
 #### Using Nix (Preferred)
 
 ```bash
-git clone https://github.com/oleghq/website.git
+git clone https://github.com/olegpustovit/website.git
 cd website
 
 nix develop
@@ -46,7 +46,7 @@ make up
 #### Manual Setup
 
 ```bash
-git clone https://github.com/oleghq/website.git
+git clone https://github.com/olegpustovit/website.git
 cd website
 
 bun install
